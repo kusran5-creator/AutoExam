@@ -891,9 +891,9 @@
 
         <label style="display:block; margin-bottom:8px;">Pilih Kurikulum Pembelajaran</label>
         <div class="grid-4" id="curriculumGrid">
-          <div class="curr-card active" data-curr="Merdeka" onclick="selectCurriculum('Merdeka', this)">
-            <div class="curr-name">Kurikulum Merdeka <span>✓</span></div>
-            <div class="curr-desc">Berbasis Capaian Pembelajaran (CP) &amp; Profil Pelajar Pancasila.</div>
+          <div class="curr-card active" data-curr="Merdeka Deep Learning" onclick="selectCurriculum('Merdeka Deep Learning', this)">
+            <div class="curr-name">Merdeka Deep Learning <span>✓</span></div>
+            <div class="curr-desc">Berbasis CP, Pembelajaran Mendalam (Mindful, Meaningful, Joyful) &amp; 8 Dimensi Profil Lulusan.</div>
           </div>
           <div class="curr-card" data-curr="K13" onclick="selectCurriculum('K13', this)">
             <div class="curr-name">Kurikulum 2013 (K13) <span></span></div>
@@ -912,7 +912,7 @@
         <div id="currInfoBanner" class="info-banner">
           <span>ℹ️</span>
           <div id="currInfoText">
-            <strong>Kurikulum Merdeka aktif:</strong> Soal dan kisi-kisi otomatis dipetakan ke Capaian Pembelajaran (CP), Tujuan Pembelajaran (TP), serta penalaran HOTS.
+            <strong>Merdeka Deep Learning aktif:</strong> Soal dan kisi-kisi dirancang berbasis Capaian Pembelajaran (CP), prinsip Pembelajaran Mendalam (<em>Mindful, Meaningful, Joyful</em>), serta 8 Dimensi Profil Lulusan dan penalaran HOTS.
           </div>
         </div>
 
@@ -1181,7 +1181,7 @@
         <div class="exam-kop">
           <h2 id="sheetSchoolName">SMA NEGERI 1 MERDEKA</h2>
           <div style="font-weight:700; font-size:15px;" id="sheetExamTitle">ASESMEN SUMATIF TENGAH SEMESTER</div>
-          <div style="font-size:12.5px; color:var(--text-muted);" id="sheetCurrLabel">Kurikulum Merdeka</div>
+          <div style="font-size:12.5px; color:var(--text-muted);" id="sheetCurrLabel">Kurikulum Merdeka Deep Learning</div>
         </div>
 
         <table class="exam-meta-table">
@@ -1247,17 +1247,28 @@
   <script>
     // ==================== STATE & STORAGE ====================
     let state = {
-      curriculum: 'Merdeka',
+      curriculum: 'Merdeka Deep Learning',
       sourceTab: 'teks',
       examData: null
     };
 
     const CURRICULUM_INFO = {
-      Merdeka: '<strong>Kurikulum Merdeka aktif:</strong> Soal dan kisi-kisi otomatis dipetakan ke Capaian Pembelajaran (CP), Tujuan Pembelajaran (TP), serta penalaran HOTS.',
+      'Merdeka Deep Learning': '<strong>Merdeka Deep Learning aktif:</strong> Soal dan kisi-kisi dirancang berbasis Capaian Pembelajaran (CP), prinsip Pembelajaran Mendalam (<em>Mindful, Meaningful, Joyful</em>), serta 8 Dimensi Profil Lulusan dan penalaran HOTS.',
       K13: '<strong>Kurikulum 2013 (K13) aktif:</strong> Pemetaan soal disusun berdasarkan Kompetensi Inti (KI), Kompetensi Dasar (KD), dan Indikator Pencapaian Kompetensi (IPK).',
       KBC: '<strong>Kurikulum KBC / Kemenag aktif:</strong> Kisi-kisi menyesuaikan standar kompetensi madrasah dengan integrasi literasi, karakter, dan analisis kontekstual.',
       Hybrid: '<strong>Kurikulum Hybrid aktif:</strong> Menggabungkan struktur Capaian Pembelajaran esensial dengan indikator terukur lintas kompetensi.'
     };
+
+    function formatCurriculumLabel(curr) {
+      const map = {
+        'Merdeka Deep Learning': 'Kurikulum Merdeka Deep Learning',
+        'Merdeka': 'Kurikulum Merdeka Deep Learning',
+        'K13': 'Kurikulum 2013 (K13)',
+        'KBC': 'Kurikulum KBC / Kemenag',
+        'Hybrid': 'Kurikulum Hybrid / Nasional'
+      };
+      return map[curr] || `Kurikulum ${curr}`;
+    }
 
     const GRADE_OPTIONS = {
       'SD/MI': ['Kelas 1', 'Kelas 2', 'Kelas 3', 'Kelas 4', 'Kelas 5', 'Kelas 6'],
@@ -1785,14 +1796,21 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
         visualType: item.visualType
       }));
 
+      const deepLearningGuidance = (meta.curriculum === 'Merdeka Deep Learning' || meta.curriculum === 'Merdeka')
+        ? `\nPENDEKATAN KHUSUS MERDEKA DEEP LEARNING (PEMBELAJARAN MENDALAM):
+- Terapkan prinsip Mindful (berkesadaran/reflektif), Meaningful (bermakna/kontekstual dengan masalah kehidupan nyata), dan Joyful (komunikatif, menantang rasa ingin tahu).
+- Integrasikan penguatan 8 Dimensi Profil Lulusan (keimanan & ketakwaan, kewargaan, penalaran kritis, kreativitas, kolaborasi, kemandirian, kesehatan, komunikasi) dalam stimulus dan indikator soal.
+- Gunakan taksonomi SOLO / Bloom HOTS (pemahaman relasional & abstrak yang diperluas) sesuai tingkat kesulitan.`
+        : '';
+
       const prompt = `Anda adalah pakar penyusun asesmen pendidikan Indonesia. Buatlah ${batchPlan.length} butir soal ujian berkualitas tinggi berdasarkan materi berikut.
 
 IDENTITAS UJIAN:
-- Kurikulum: ${meta.curriculum}
+- Kurikulum: ${formatCurriculumLabel(meta.curriculum)}
 - Jenjang / Kelas: ${meta.eduLevel} / ${meta.grade}
 - Mata Pelajaran: ${meta.subject}
 - Topik: ${meta.topic}
-- Jumlah opsi Pilihan Ganda (pg): ${meta.pgOptionCount} opsi (${letters.join(', ')})
+- Jumlah opsi Pilihan Ganda (pg): ${meta.pgOptionCount} opsi (${letters.join(', ')})${deepLearningGuidance}
 
 MATERI PEMBELAJARAN:
 """
@@ -1997,7 +2015,9 @@ Kembalikan HANYA JSON valid berbentuk array of objects (tanpa teks pembuka/penut
           visualPrompt,
           imageDataUrl: null,
           conceptTerm: fact.term,
-          indicator: `Peserta didik mampu ${diff.bloom.toLowerCase()} konsep ${fact.term} dalam materi ${meta.topic}.`
+          indicator: (meta.curriculum === 'Merdeka Deep Learning' || meta.curriculum === 'Merdeka')
+            ? `Melalui stimulus kontekstual (Deep Learning), peserta didik mampu ${diff.bloom.toLowerCase()} konsep ${fact.term} pada materi ${meta.topic} secara kritis dan reflektif.`
+            : `Peserta didik mampu ${diff.bloom.toLowerCase()} konsep ${fact.term} dalam materi ${meta.topic}.`
         };
 
         if (type === 'pg') {
@@ -2106,7 +2126,7 @@ Kembalikan HANYA JSON valid berbentuk array of objects (tanpa teks pembuka/penut
 
       document.getElementById('sheetSchoolName').textContent = meta.school.toUpperCase();
       document.getElementById('sheetExamTitle').textContent = meta.examTitle.toUpperCase();
-      document.getElementById('sheetCurrLabel').textContent = `Kurikulum ${meta.curriculum}`;
+      document.getElementById('sheetCurrLabel').textContent = formatCurriculumLabel(meta.curriculum);
       document.getElementById('metaSubject').textContent = meta.subject;
       document.getElementById('metaGrade').textContent = `${meta.eduLevel} / ${meta.grade}`;
       document.getElementById('metaTopic').textContent = meta.topic;
@@ -2264,7 +2284,7 @@ Kembalikan HANYA JSON valid berbentuk array of objects (tanpa teks pembuka/penut
             ${questions.map(q => `
               <tr>
                 <td><strong>${q.num}</strong></td>
-                <td>Memahami dan menganalisis konsep ${meta.topic} (${meta.subject} ${meta.grade})</td>
+                <td>${(meta.curriculum === 'Merdeka Deep Learning' || meta.curriculum === 'Merdeka') ? `CP &amp; Pembelajaran Mendalam (Deep Learning): Memahami, merefleksikan, dan menganalisis konsep ${meta.topic} (${meta.subject} ${meta.grade})` : `Memahami dan menganalisis konsep ${meta.topic} (${meta.subject} ${meta.grade})`}</td>
                 <td>${q.conceptTerm}</td>
                 <td>${q.indicator}</td>
                 <td>${q.typeLabel}</td>
@@ -2612,7 +2632,7 @@ Kembalikan HANYA JSON valid berbentuk array of objects (tanpa teks pembuka/penut
           <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:8px; margin-bottom:12px;">
             <h2 style="margin:0;">${meta.school.toUpperCase()}</h2>
             <h3 style="margin:4px 0;">${meta.examTitle.toUpperCase()}</h3>
-            <div>Kurikulum ${meta.curriculum}</div>
+            <div>${formatCurriculumLabel(meta.curriculum)}</div>
           </div>
           <table style="margin-bottom:14px;">
             <tr><td><b>Mata Pelajaran</b></td><td>${meta.subject}</td><td><b>Jenjang / Kelas</b></td><td>${meta.eduLevel} / ${meta.grade}</td></tr>
