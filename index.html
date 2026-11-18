@@ -31,11 +31,7 @@
       --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
@@ -65,12 +61,7 @@
       gap: 16px;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-    }
+    .brand { display: flex; align-items: center; gap: 12px; cursor: pointer; }
 
     .brand-logo {
       width: 40px;
@@ -86,28 +77,10 @@
       box-shadow: 0 4px 10px rgba(249, 115, 22, 0.28);
     }
 
-    .brand-title {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text);
-    }
-
-    .brand-title span {
-      color: var(--primary);
-    }
-
-    .brand-sub {
-      font-size: 12px;
-      color: var(--text-light);
-    }
-
-    .topbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+    .brand-title { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; color: var(--text); }
+    .brand-title span { color: var(--primary); }
+    .brand-sub { font-size: 12px; color: var(--text-light); }
+    .topbar-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
     /* Buttons */
     .btn {
@@ -126,70 +99,19 @@
       white-space: nowrap;
     }
 
-    .btn:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 2px 8px rgba(249, 115, 22, 0.25); }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); transform: translateY(-1px); }
+    .btn-secondary { background: var(--surface); color: var(--text); border-color: var(--border-strong); }
+    .btn-secondary:hover:not(:disabled) { background: var(--surface-alt); }
+    .btn-soft { background: var(--primary-soft); color: var(--primary-hover); border-color: var(--primary-border); }
+    .btn-soft:hover:not(:disabled) { background: #FFEDD5; }
+    .btn-sm { padding: 6px 12px; font-size: 13px; }
+    .btn-lg { padding: 13px 24px; font-size: 15px; border-radius: 10px; }
 
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-      box-shadow: 0 2px 8px rgba(249, 115, 22, 0.25);
-    }
+    /* Container & Cards */
+    .container { max-width: 1120px; margin: 0 auto; padding: 24px 20px 60px; }
 
-    .btn-primary:hover:not(:disabled) {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
-    }
-
-    .btn-secondary {
-      background: var(--surface);
-      color: var(--text);
-      border-color: var(--border-strong);
-    }
-
-    .btn-secondary:hover:not(:disabled) {
-      background: var(--surface-alt);
-    }
-
-    .btn-soft {
-      background: var(--primary-soft);
-      color: var(--primary-hover);
-      border-color: var(--primary-border);
-    }
-
-    .btn-soft:hover:not(:disabled) {
-      background: #FFEDD5;
-    }
-
-    .btn-success {
-      background: var(--success);
-      color: #fff;
-    }
-
-    .btn-success:hover:not(:disabled) {
-      background: #059669;
-    }
-
-    .btn-sm {
-      padding: 6px 12px;
-      font-size: 13px;
-    }
-
-    .btn-lg {
-      padding: 13px 24px;
-      font-size: 15px;
-      border-radius: 10px;
-    }
-
-    /* Container */
-    .container {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 24px 20px 60px;
-    }
-
-    /* Cards & Sections */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -215,14 +137,7 @@
       flex-wrap: wrap;
     }
 
-    .card-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-    }
+    .card-title { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; color: var(--text); }
 
     .step-badge {
       width: 26px;
@@ -239,45 +154,18 @@
     }
 
     /* Grid Layouts */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 
     @media (max-width: 820px) {
-      .grid-2, .grid-3, .grid-4 {
-        grid-template-columns: 1fr;
-      }
-      .topbar-inner {
-        flex-wrap: wrap;
-      }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .topbar-inner { flex-wrap: wrap; }
     }
 
     /* Form Controls */
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
 
     input[type="text"],
     input[type="password"],
@@ -301,24 +189,12 @@
       box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.14);
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 150px;
-      line-height: 1.6;
-    }
+    textarea { resize: vertical; min-height: 165px; line-height: 1.65; }
 
-    .api-input-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
+    .api-input-row { display: flex; gap: 8px; align-items: center; }
+    .api-input-row input { flex: 1; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
 
-    .api-input-row input {
-      flex: 1;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    }
-
-    /* Curriculum Selector Pills */
+    /* Curriculum Cards */
     .curr-card {
       border: 1.5px solid var(--border);
       border-radius: 10px;
@@ -328,11 +204,7 @@
       background: var(--surface);
     }
 
-    .curr-card:hover {
-      border-color: var(--primary-border);
-      background: #FFFBF7;
-    }
-
+    .curr-card:hover { border-color: var(--primary-border); background: #FFFBF7; }
     .curr-card.active {
       border-color: var(--primary);
       background: var(--primary-soft);
@@ -349,10 +221,7 @@
       justify-content: space-between;
     }
 
-    .curr-desc {
-      font-size: 12px;
-      color: var(--text-light);
-    }
+    .curr-desc { font-size: 12px; color: var(--text-light); }
 
     .info-banner {
       margin-top: 14px;
@@ -367,7 +236,7 @@
       gap: 10px;
     }
 
-    /* Input Source Tabs (TEKS | DOCX | TXT) */
+    /* Input Source Tabs */
     .source-tabs {
       display: inline-flex;
       background: var(--surface-alt);
@@ -389,11 +258,7 @@
       transition: all 0.15s;
     }
 
-    .source-tab.active {
-      background: var(--surface);
-      color: var(--primary);
-      box-shadow: var(--shadow-sm);
-    }
+    .source-tab.active { background: var(--surface); color: var(--primary); box-shadow: var(--shadow-sm); }
 
     .upload-dropzone {
       border: 2px dashed var(--border-strong);
@@ -405,10 +270,32 @@
       transition: all 0.15s;
     }
 
-    .upload-dropzone:hover {
-      border-color: var(--primary);
+    .upload-dropzone:hover { border-color: var(--primary); background: var(--primary-soft); }
+
+    .auto-sync-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
       background: var(--primary-soft);
+      border: 1px solid var(--primary-border);
+      border-radius: 9px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      font-size: 13px;
     }
+
+    .auto-sync-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .auto-sync-toggle input { width: 16px; height: 16px; accent-color: var(--primary); }
 
     /* Question Type Counter Rows */
     .qtype-item {
@@ -422,21 +309,9 @@
       gap: 12px;
     }
 
-    .qtype-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .qtype-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .qtype-sub {
-      font-size: 12px;
-      color: var(--text-light);
-    }
+    .qtype-info { display: flex; flex-direction: column; }
+    .qtype-title { font-size: 14px; font-weight: 600; color: var(--text); }
+    .qtype-sub { font-size: 12px; color: var(--text-light); }
 
     .stepper {
       display: inline-flex;
@@ -458,9 +333,7 @@
       cursor: pointer;
     }
 
-    .stepper button:hover {
-      background: #E2E8F0;
-    }
+    .stepper button:hover { background: #E2E8F0; }
 
     .stepper input {
       width: 48px;
@@ -486,19 +359,10 @@
       gap: 12px;
     }
 
-    .visual-card.active {
-      border-color: var(--primary);
-      background: var(--primary-soft);
-    }
+    .visual-card.active { border-color: var(--primary); background: var(--primary-soft); }
+    .visual-card input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); margin-top: 2px; }
 
-    .visual-card input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--primary);
-      margin-top: 2px;
-    }
-
-    /* Badge Pill */
+    /* Pills */
     .pill {
       display: inline-flex;
       align-items: center;
@@ -509,23 +373,9 @@
       font-weight: 700;
     }
 
-    .pill-orange {
-      background: var(--primary-soft);
-      color: var(--primary-hover);
-      border: 1px solid var(--primary-border);
-    }
-
-    .pill-green {
-      background: var(--success-soft);
-      color: #047857;
-      border: 1px solid #A7F3D0;
-    }
-
-    .pill-slate {
-      background: var(--surface-alt);
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-    }
+    .pill-orange { background: var(--primary-soft); color: var(--primary-hover); border: 1px solid var(--primary-border); }
+    .pill-green { background: var(--success-soft); color: #047857; border: 1px solid #A7F3D0; }
+    .pill-slate { background: var(--surface-alt); color: var(--text-muted); border: 1px solid var(--border); }
 
     /* Loading View */
     .loading-box {
@@ -549,9 +399,7 @@
       margin: 0 auto 20px;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     .progress-track {
       width: 100%;
@@ -569,7 +417,7 @@
       transition: width 0.25s ease;
     }
 
-    /* Result Tabs */
+    /* Result Tabs & Exam Paper */
     .result-toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -606,13 +454,8 @@
       transition: all 0.15s;
     }
 
-    .nav-tab.active {
-      background: var(--surface);
-      color: var(--primary);
-      box-shadow: var(--shadow-sm);
-    }
+    .nav-tab.active { background: var(--surface); color: var(--primary); box-shadow: var(--shadow-sm); }
 
-    /* Exam Paper Preview */
     .exam-sheet {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -628,69 +471,20 @@
       text-align: center;
     }
 
-    .exam-kop h2 {
-      font-size: 18px;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      margin-bottom: 4px;
-    }
+    .exam-kop h2 { font-size: 18px; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 4px; }
 
-    .exam-meta-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-      font-size: 13.5px;
-    }
+    .exam-meta-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13.5px; }
+    .exam-meta-table td { padding: 6px 10px; border: 1px solid var(--border); }
 
-    .exam-meta-table td {
-      padding: 6px 10px;
-      border: 1px solid var(--border);
-    }
+    .question-block { padding: 18px 0; border-bottom: 1px solid var(--border); }
+    .question-block:last-child { border-bottom: none; }
 
-    .question-block {
-      padding: 18px 0;
-      border-bottom: 1px solid var(--border);
-    }
+    .q-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+    .q-num { font-weight: 800; font-size: 15px; color: var(--text); }
+    .q-text { font-size: 14.5px; color: var(--text); margin-bottom: 10px; }
+    .q-options { list-style: none; display: flex; flex-direction: column; gap: 6px; padding-left: 16px; }
+    .q-options li { font-size: 14px; color: var(--text); }
 
-    .question-block:last-child {
-      border-bottom: none;
-    }
-
-    .q-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-    }
-
-    .q-num {
-      font-weight: 800;
-      font-size: 15px;
-      color: var(--text);
-    }
-
-    .q-text {
-      font-size: 14.5px;
-      color: var(--text);
-      margin-bottom: 10px;
-    }
-
-    .q-options {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      padding-left: 16px;
-    }
-
-    .q-options li {
-      font-size: 14px;
-      color: var(--text);
-    }
-
-    /* AI Image Studio Box inside Question */
     .ai-visual-box {
       margin: 12px 0;
       padding: 14px;
@@ -699,20 +493,8 @@
       border: 1px dashed #FDBA74;
     }
 
-    .ai-visual-controls {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .ai-visual-controls input {
-      flex: 1;
-      min-width: 220px;
-      font-size: 13px;
-      padding: 7px 10px;
-    }
+    .ai-visual-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; }
+    .ai-visual-controls input { flex: 1; min-width: 220px; font-size: 13px; padding: 7px 10px; }
 
     .generated-img-wrap {
       margin-top: 12px;
@@ -723,37 +505,13 @@
       border: 1px solid var(--border);
     }
 
-    .generated-img-wrap img {
-      max-width: 100%;
-      max-height: 320px;
-      border-radius: 6px;
-      display: block;
-      margin: 0 auto;
-    }
+    .generated-img-wrap img { max-width: 100%; max-height: 320px; border-radius: 6px; display: block; margin: 0 auto; }
 
-    /* Tables in Kisi-kisi & Matching */
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13.5px;
-      margin-top: 10px;
-    }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 10px; }
+    .data-table th, .data-table td { border: 1px solid var(--border-strong); padding: 9px 11px; text-align: left; vertical-align: top; }
+    .data-table th { background: var(--surface-alt); font-weight: 700; color: var(--text); }
 
-    .data-table th,
-    .data-table td {
-      border: 1px solid var(--border-strong);
-      padding: 9px 11px;
-      text-align: left;
-      vertical-align: top;
-    }
-
-    .data-table th {
-      background: var(--surface-alt);
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    /* Toast Notification */
+    /* Toast */
     .toast-container {
       position: fixed;
       top: 18px;
@@ -786,39 +544,21 @@
       to { transform: translateX(0); opacity: 1; }
     }
 
-    .hidden {
-      display: none !important;
-    }
+    .hidden { display: none !important; }
 
-    /* Print Styles */
     @media print {
       body { background: #fff; }
-      .topbar, .result-toolbar, .no-print, .ai-visual-controls {
-        display: none !important;
-      }
-      .container {
-        max-width: 100%;
-        padding: 0;
-      }
-      .exam-sheet {
-        border: none;
-        box-shadow: none;
-        padding: 0;
-      }
-      .ai-visual-box {
-        border: none;
-        background: transparent;
-        padding: 0;
-      }
+      .topbar, .result-toolbar, .no-print, .ai-visual-controls { display: none !important; }
+      .container { max-width: 100%; padding: 0; }
+      .exam-sheet { border: none; box-shadow: none; padding: 0; }
+      .ai-visual-box { border: none; background: transparent; padding: 0; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Toast Container -->
   <div id="toastContainer" class="toast-container"></div>
 
-  <!-- Top Header -->
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand" onclick="goToView('setup')">
@@ -842,7 +582,7 @@
 
   <main class="container">
 
-    <!-- ==================== VIEW 1: SETUP / PENGATURAN ==================== -->
+    <!-- ==================== VIEW 1: SETUP ==================== -->
     <section id="viewSetup">
 
       <!-- Card 0: Integrasi Gemini API Key -->
@@ -934,7 +674,7 @@
         <div class="grid-4" style="margin-top:14px;">
           <div class="form-group">
             <label for="eduLevel">Jenjang Pendidikan</label>
-            <select id="eduLevel" onchange="updateGradeOptions()">
+            <select id="eduLevel" onchange="updateGradeOptions(); scheduleAutoMaterialSync();">
               <option value="SD/MI">SD / MI</option>
               <option value="SMP/MTs">SMP / MTs</option>
               <option value="SMA/MA" selected>SMA / MA</option>
@@ -943,24 +683,39 @@
           </div>
           <div class="form-group">
             <label for="gradeLevel">Kelas</label>
-            <select id="gradeLevel"></select>
+            <select id="gradeLevel" onchange="scheduleAutoMaterialSync()"></select>
           </div>
           <div class="form-group">
             <label for="subjectName">Mata Pelajaran</label>
-            <input type="text" id="subjectName" placeholder="Contoh: Biologi / IPA / Sejarah" value="Biologi" />
+            <input type="text" id="subjectName" placeholder="Contoh: Biologi / IPA / Sejarah" value="Biologi" oninput="scheduleAutoMaterialSync()" />
           </div>
           <div class="form-group">
             <label for="topicName">Topik / Materi Pokok</label>
-            <input type="text" id="topicName" placeholder="Contoh: Ekosistem dan Aliran Energi" value="Ekosistem dan Interaksi Antar Komponen" />
+            <input type="text" id="topicName" placeholder="Contoh: Ekosistem dan Aliran Energi" value="Ekosistem dan Interaksi Antar Komponen" oninput="scheduleAutoMaterialSync()" />
           </div>
         </div>
       </div>
 
-      <!-- Card 2: Sumber Materi Pembelajaran -->
+      <!-- Card 2: Sumber Materi Pembelajaran (Auto-Generate AI & Kontekstual) -->
       <div class="card">
         <div class="card-header">
           <div class="card-title"><span class="step-badge">2</span> Sumber Materi Pembelajaran</div>
-          <button type="button" class="btn btn-soft btn-sm" onclick="fillSampleMaterial()">✨ Isi Contoh Materi</button>
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <span id="materialStatusBadge" class="pill pill-green">✓ Siap digunakan</span>
+            <button type="button" id="btnGenerateMaterial" class="btn btn-primary btn-sm" onclick="generateContextualMaterial(true)">
+              ✨ Generate Materi AI
+            </button>
+          </div>
+        </div>
+
+        <div class="auto-sync-bar">
+          <label class="auto-sync-toggle">
+            <input type="checkbox" id="autoSyncMaterialToggle" checked />
+            <span>Sinkronisasi Otomatis Materi saat Mata Pelajaran, Topik, Kelas, atau Kurikulum diubah</span>
+          </label>
+          <span style="font-size:12px; color:var(--text-muted);" id="materialSourceHint">
+            Menyesuaikan konteks: <strong>Biologi • Kelas 10 • Merdeka Deep Learning</strong>
+          </span>
         </div>
 
         <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
@@ -972,7 +727,6 @@
           <span id="wordCountBadge" class="pill pill-slate">0 kata</span>
         </div>
 
-        <!-- Panel Upload File (for DOCX / TXT) -->
         <div id="fileUploadPanel" class="hidden" style="margin-bottom:14px;">
           <div class="upload-dropzone" onclick="document.getElementById('materialFileInput').click()">
             <div style="font-size:28px; margin-bottom:6px;">📄</div>
@@ -983,12 +737,12 @@
         </div>
 
         <div class="form-group">
-          <label for="materialText">Ringkasan / Teks Materi Acuan Pembuatan Soal</label>
-          <textarea id="materialText" oninput="updateWordCount()" placeholder="Tempelkan ringkasan materi pelajaran, bab buku, atau catatan belajar di sini..."></textarea>
+          <label for="materialText">Ringkasan / Teks Materi Acuan Pembuatan Soal (Dapat diedit manual kapan saja)</label>
+          <textarea id="materialText" oninput="handleManualMaterialEdit()" placeholder="Ringkasan materi akan ter-generate otomatis sesuai Mata Pelajaran, Topik, Kelas, dan Kurikulum, atau Anda dapat menempelkan teks materi sendiri di sini..."></textarea>
         </div>
       </div>
 
-      <!-- Card 3: Pengaturan Soal (6 Tipe, Opsi PG, 4 Level Kesulitan, Max 50 Soal) -->
+      <!-- Card 3: Pengaturan Komposisi Soal -->
       <div class="card">
         <div class="card-header">
           <div class="card-title"><span class="step-badge">3</span> Pengaturan Komposisi Soal &amp; Tingkat Kesulitan</div>
@@ -1100,7 +854,6 @@
           </div>
         </div>
 
-        <!-- Visual & Multimedia Options -->
         <div style="margin-top:18px;">
           <label style="display:block; margin-bottom:8px;">Jenis Visual &amp; Multimedia Pendukung Soal (Opsional)</label>
           <div class="grid-3">
@@ -1136,7 +889,7 @@
       </div>
     </section>
 
-    <!-- ==================== VIEW 2: LOADING / PROSES AI ==================== -->
+    <!-- ==================== VIEW 2: LOADING ==================== -->
     <section id="viewLoading" class="hidden">
       <div class="loading-box">
         <div class="spinner"></div>
@@ -1149,10 +902,9 @@
       </div>
     </section>
 
-    <!-- ==================== VIEW 3: HASIL UJIAN & EKSPOR ==================== -->
+    <!-- ==================== VIEW 3: RESULTS ==================== -->
     <section id="viewResults" class="hidden">
 
-      <!-- Action Toolbar -->
       <div class="result-toolbar no-print">
         <div class="nav-tabs">
           <button class="nav-tab active" data-tab="naskah" onclick="switchResultTab('naskah', this)">📄 Naskah Soal</button>
@@ -1249,7 +1001,10 @@
     let state = {
       curriculum: 'Merdeka Deep Learning',
       sourceTab: 'teks',
-      examData: null
+      examData: null,
+      materialDebounceTimer: null,
+      lastMaterialContextKey: '',
+      isUserCustomText: false
     };
 
     const CURRICULUM_INFO = {
@@ -1288,7 +1043,9 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
       loadAiSettings();
       updateGradeOptions();
       document.getElementById('gradeLevel').value = 'Kelas 10';
-      fillSampleMaterial(true);
+      document.getElementById('materialText').value = SAMPLE_TEXT;
+      updateWordCount();
+      updateMaterialContextHint();
       syncQTypeTotals();
       checkSavedExam();
     });
@@ -1319,6 +1076,9 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
     function handleApiKeyInput() {
       saveAiSettings();
       updateAiBadges();
+      if (getApiKey().length > 25 && document.getElementById('autoSyncMaterialToggle').checked) {
+        scheduleAutoMaterialSync(true);
+      }
     }
 
     function saveAiSettings() {
@@ -1380,7 +1140,7 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
       try {
         const text = await callGeminiTextWithFallback(apiKey, 'Balas hanya dengan kata: TERHUBUNG', false);
         if (text) {
-          showToast('Koneksi Gemini API berhasil! Siap meracik soal & gambar AI.');
+          showToast('Koneksi Gemini API berhasil! Siap meracik materi, soal & gambar AI.');
         }
       } catch (err) {
         showToast('Gagal terhubung ke Gemini API: ' + err.message);
@@ -1398,9 +1158,7 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
           const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
           const body = {
             contents: [{ role: 'user', parts: [{ text: promptText }] }],
-            generationConfig: {
-              temperature: 0.65
-            }
+            generationConfig: { temperature: 0.65 }
           };
           if (expectJson) {
             body.generationConfig.responseMimeType = 'application/json';
@@ -1415,7 +1173,7 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
             const msg = data?.error?.message || `HTTP ${resp.status}`;
             if (resp.status === 404 || msg.toLowerCase().includes('not found') || msg.toLowerCase().includes('deprecated')) {
               lastErr = new Error(msg);
-              continue; // try next fallback model
+              continue;
             }
             throw new Error(msg);
           }
@@ -1430,6 +1188,151 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
         }
       }
       throw lastErr || new Error('Semua model Gemini gagal dihubungi.');
+    }
+
+    // ==================== AUTO-GENERATE SUMBER MATERI PEMBELAJARAN ====================
+    function getMaterialContext() {
+      return {
+        curriculum: state.curriculum,
+        eduLevel: document.getElementById('eduLevel').value,
+        grade: document.getElementById('gradeLevel').value,
+        subject: document.getElementById('subjectName').value.trim(),
+        topic: document.getElementById('topicName').value.trim()
+      };
+    }
+
+    function updateMaterialContextHint() {
+      const ctx = getMaterialContext();
+      const hint = document.getElementById('materialSourceHint');
+      if (hint) {
+        hint.innerHTML = `Konteks aktif: <strong>${escapeHtml(ctx.subject || 'Mapel')} • ${escapeHtml(ctx.topic || 'Topik')} • ${escapeHtml(ctx.grade)} (${escapeHtml(ctx.curriculum)})</strong>`;
+      }
+    }
+
+    function handleManualMaterialEdit() {
+      state.isUserCustomText = true;
+      updateWordCount();
+      const status = document.getElementById('materialStatusBadge');
+      if (status) {
+        status.className = 'pill pill-slate';
+        status.textContent = '✎ Diedit manual';
+      }
+    }
+
+    function scheduleAutoMaterialSync(force = false) {
+      updateMaterialContextHint();
+      const autoEnabled = document.getElementById('autoSyncMaterialToggle')?.checked;
+      if (!autoEnabled && !force) return;
+
+      clearTimeout(state.materialDebounceTimer);
+      state.materialDebounceTimer = setTimeout(() => {
+        generateContextualMaterial(force);
+      }, 950);
+    }
+
+    function buildLocalContextualMaterial(ctx) {
+      const subj = ctx.subject || 'Mata Pelajaran';
+      const topic = ctx.topic || 'Topik Pembelajaran';
+      if (
+        subj.toLowerCase() === 'biologi' &&
+        topic.toLowerCase().includes('ekosistem') &&
+        ctx.grade === 'Kelas 10'
+      ) {
+        return SAMPLE_TEXT;
+      }
+
+      const currFocus = (ctx.curriculum === 'Merdeka Deep Learning')
+        ? 'Pembelajaran Mendalam (Mindful, Meaningful, Joyful) dan penguatan penalaran kritis serta pemahaman konseptual yang kontekstual'
+        : `standar kompetensi ${formatCurriculumLabel(ctx.curriculum)}`;
+
+      return `${topic} merupakan salah satu topik inti dalam mata pelajaran ${subj} untuk jenjang ${ctx.eduLevel} (${ctx.grade}) yang disusun selaras dengan ${currFocus}. Secara konseptual, ${topic} membahas prinsip dasar, struktur komponen penyusun, serta mekanisme kerja yang saling berkaitan dalam membentuk pemahaman utuh bagi peserta didik.\n\nDalam kajian ${subj}, pemahaman terhadap ${topic} mencakup identifikasi istilah-istilah kunci, klasifikasi unsur utama, serta analisis hubungan sebab-akibat antar faktor yang memengaruhinya. Setiap komponen dalam ${topic} memiliki fungsi spesifik yang menentukan keteraturan proses maupun hasil yang diamati secara ilmiah maupun praktis.\n\nPenerapan konsep ${topic} dalam kehidupan sehari-hari menuntut kemampuan peserta didik untuk menghubungkan teori dengan fenomena nyata, mengevaluasi dampak perubahan suatu variabel, serta menarik kesimpulan berbasis bukti dan penalaran tingkat tinggi (HOTS).`;
+    }
+
+    async function generateContextualMaterial(manualTrigger = false) {
+      const ctx = getMaterialContext();
+      updateMaterialContextHint();
+
+      if (!ctx.subject || !ctx.topic) {
+        if (manualTrigger) {
+          showToast('Isi Mata Pelajaran dan Topik / Materi Pokok terlebih dahulu.');
+        }
+        return;
+      }
+
+      const contextKey = `${ctx.curriculum}|${ctx.eduLevel}|${ctx.grade}|${ctx.subject}|${ctx.topic}`;
+      if (!manualTrigger && contextKey === state.lastMaterialContextKey) {
+        return;
+      }
+
+      const statusBadge = document.getElementById('materialStatusBadge');
+      const genBtn = document.getElementById('btnGenerateMaterial');
+      const apiKey = getApiKey();
+
+      if (genBtn) {
+        genBtn.disabled = true;
+        genBtn.textContent = '⏳ Menyusun Materi...';
+      }
+      if (statusBadge) {
+        statusBadge.className = 'pill pill-orange';
+        statusBadge.textContent = '⏳ Menyusun ringkasan materi...';
+      }
+
+      try {
+        let generatedText = '';
+        let usedGemini = false;
+
+        if (apiKey.length > 10) {
+          const currNote = (ctx.curriculum === 'Merdeka Deep Learning')
+            ? 'Sesuaikan dengan pendekatan Kurikulum Merdeka Deep Learning (Pembelajaran Mendalam: Mindful, Meaningful, Joyful serta penguatan penalaran kritis & konteks kehidupan nyata).'
+            : `Sesuaikan dengan capaian dan standar ${formatCurriculumLabel(ctx.curriculum)}.`;
+
+          const prompt = `Tuliskan ringkasan materi pembelajaran yang padat, akurat, terstruktur, dan kaya konsep kunci dalam Bahasa Indonesia (sekitar 180–260 kata, dibagi menjadi 3 paragraf jelas tanpa bullet markdown) sebagai bahan acuan pembuatan soal ujian.
+- Mata Pelajaran: ${ctx.subject}
+- Topik / Materi Pokok: ${ctx.topic}
+- Jenjang / Kelas: ${ctx.eduLevel} / ${ctx.grade}
+- Kurikulum: ${formatCurriculumLabel(ctx.curriculum)}
+${currNote}
+Pastikan memuat definisi utama, komponen/klasifikasi penting, mekanisme/proses, serta aplikasi kontekstualnya agar mudah diolah menjadi berbagai tipe soal (PG, PG Kompleks, Benar/Salah, Menjodohkan, Isian, dan Uraian).`;
+
+          generatedText = await callGeminiTextWithFallback(apiKey, prompt, false);
+          usedGemini = true;
+        } else {
+          generatedText = buildLocalContextualMaterial(ctx);
+        }
+
+        const cleanOut = generatedText.replace(/```[a-z]*\n?/gi, '').replace(/```/g, '').trim();
+        document.getElementById('materialText').value = cleanOut;
+        state.lastMaterialContextKey = contextKey;
+        state.isUserCustomText = false;
+        updateWordCount();
+
+        if (statusBadge) {
+          statusBadge.className = 'pill pill-green';
+          statusBadge.textContent = usedGemini ? '✨ Ter-generate via Gemini AI' : '✓ Ter-generate (Mode Lokal)';
+        }
+        if (manualTrigger) {
+          showToast(usedGemini
+            ? `Materi "${ctx.topic}" berhasil disusun via Gemini AI!`
+            : `Materi "${ctx.topic}" berhasil disusun (Mode Lokal).`);
+        }
+      } catch (err) {
+        console.warn('Fallback materi lokal karena error Gemini:', err);
+        document.getElementById('materialText').value = buildLocalContextualMaterial(ctx);
+        state.lastMaterialContextKey = contextKey;
+        updateWordCount();
+        if (statusBadge) {
+          statusBadge.className = 'pill pill-slate';
+          statusBadge.textContent = '✓ Fallback Materi Lokal';
+        }
+        if (manualTrigger) {
+          showToast(`Gemini gagal (${err.message}). Menggunakan ringkasan lokal.`);
+        }
+      } finally {
+        if (genBtn) {
+          genBtn.disabled = false;
+          genBtn.textContent = '✨ Generate Materi AI';
+        }
+      }
     }
 
     // ==================== NAVIGATION & FORM CONTROLS ====================
@@ -1461,6 +1364,7 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
       el.classList.add('active');
       el.querySelector('.curr-name span').textContent = '✓';
       document.getElementById('currInfoText').innerHTML = CURRICULUM_INFO[curr];
+      scheduleAutoMaterialSync();
     }
 
     function updateGradeOptions() {
@@ -1490,12 +1394,6 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
       }
     }
 
-    function fillSampleMaterial(silent = false) {
-      document.getElementById('materialText').value = SAMPLE_TEXT;
-      updateWordCount();
-      if (!silent) showToast('Contoh materi pembelajaran berhasil dimuat!');
-    }
-
     function updateWordCount() {
       const text = document.getElementById('materialText').value.trim();
       const words = text ? text.split(/\s+/).length : 0;
@@ -1512,14 +1410,14 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
         if (name.endsWith('.txt')) {
           const text = await file.text();
           document.getElementById('materialText').value = text;
-          updateWordCount();
+          handleManualMaterialEdit();
           showToast(`File "${file.name}" berhasil dibaca!`);
         } else if (name.endsWith('.docx')) {
           const buf = await file.arrayBuffer();
           const extracted = await extractDocxText(buf);
           if (extracted.trim()) {
             document.getElementById('materialText').value = extracted.trim();
-            updateWordCount();
+            handleManualMaterialEdit();
             showToast(`Dokumen Word "${file.name}" berhasil diekstrak!`);
           } else {
             showToast('Tidak ditemukan teks pada file DOCX tersebut.');
@@ -1610,17 +1508,13 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
       Q_KEYS.forEach(k => {
         const inp = document.getElementById('qty_' + k);
         let v = Math.max(0, parseInt(inp.value, 10) || 0);
-        if (running + v > 50) {
-          v = Math.max(0, 50 - running);
-        }
+        if (running + v > 50) v = Math.max(0, 50 - running);
         inp.value = v;
         running += v;
       });
       document.getElementById('totalQuestionsBadge').textContent = `Total: ${running} / 50 Soal`;
       const visInput = document.getElementById('visualCount');
-      if (parseInt(visInput.value, 10) > running) {
-        visInput.value = running;
-      }
+      if (parseInt(visInput.value, 10) > running) visInput.value = running;
       visInput.max = running;
     }
 
@@ -1643,7 +1537,7 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
       }, 0);
     }
 
-    // ==================== MAIN GENERATION FLOW (GEMINI AI + LOCAL FALLBACK) ====================
+    // ==================== MAIN GENERATION FLOW ====================
     function getExamConfigFromForm() {
       const meta = {
         curriculum: state.curriculum,
@@ -1701,10 +1595,10 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
         showToast('Pilih minimal 1 butir soal terlebih dahulu.');
         return;
       }
-      const material = document.getElementById('materialText').value.trim();
+      let material = document.getElementById('materialText').value.trim();
       if (material.length < 20) {
-        showToast('Masukkan teks materi pembelajaran minimal 1 kalimat.');
-        return;
+        await generateContextualMaterial(false);
+        material = document.getElementById('materialText').value.trim();
       }
 
       const apiKey = getApiKey();
@@ -1723,7 +1617,6 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
       };
 
       if (apiKey.length > 10) {
-        // REAL GEMINI GENERATIVE AI MODE (with batching for up to 50 questions)
         loadTitle.textContent = 'Meracik Soal dengan Google Gemini AI...';
         try {
           const BATCH_SIZE = 15;
@@ -1760,7 +1653,6 @@ Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, l
         }
       }
 
-      // LOCAL OFFLINE ENGINE FALLBACK
       loadTitle.textContent = 'Meracik Naskah Ujian & Kisi-Kisi (Mode Lokal)...';
       const steps = [
         'Menganalisis struktur & konsep utama materi...',
@@ -1830,10 +1722,10 @@ Kembalikan HANYA JSON valid berbentuk array of objects (tanpa teks pembuka/penut
     "indicator": "Indikator soal operasional sesuai Kurikulum ${meta.curriculum}",
     "stem": "Teks pertanyaan lengkap (jika hasVisual true, awali dengan merujuk visualType tersebut)",
     "visualPrompt": "Deskripsi visual/diagram edukatif yang jelas dalam Bahasa Indonesia jika hasVisual true, atau string kosong jika false",
-    "options": [{"label": "A", "text": "..."}], // WAJIB diisi jika type == "pg" sebanyak ${meta.pgOptionCount} opsi (${letters.join(', ')})
-    "statements": [{"text": "...", "correct": true}], // WAJIB diisi 4 pernyataan jika type == "pgk" (minimal 2 correct: true)
-    "rows": [{"statement": "...", "isTrue": true}], // WAJIB diisi 2-3 pernyataan jika type == "bs"
-    "pairs": [{"left": "Istilah 1", "rightText": "Pasangan benarnya"}], // WAJIB diisi 3 pasang jika type == "jodoh"
+    "options": [{"label": "A", "text": "..."}],
+    "statements": [{"text": "...", "correct": true}],
+    "rows": [{"statement": "...", "isTrue": true}],
+    "pairs": [{"left": "Istilah 1", "rightText": "Pasangan benarnya"}],
     "answer": "Kunci jawaban lengkap & jelas",
     "explanation": "Pembahasan rinci mengapa jawaban benar (dan rubrik skor jika uraian)"
   }
@@ -1872,13 +1764,12 @@ Kembalikan HANYA JSON valid berbentuk array of objects (tanpa teks pembuka/penut
         };
 
         if (q.type === 'pg') {
-          const opts = Array.isArray(aiItem.options) && aiItem.options.length >= 2
+          q.options = Array.isArray(aiItem.options) && aiItem.options.length >= 2
             ? aiItem.options.slice(0, meta.pgOptionCount).map((o, i) => ({
                 label: letters[i] || String.fromCharCode(65 + i),
                 text: o.text || String(o)
               }))
-            : letters.map((l, i) => ({ label: l, text: `Opsi ${l} terkait ${q.conceptTerm}` }));
-          q.options = opts;
+            : letters.map(l => ({ label: l, text: `Opsi ${l} terkait ${q.conceptTerm}` }));
         } else if (q.type === 'pgk') {
           q.statements = Array.isArray(aiItem.statements) && aiItem.statements.length >= 2
             ? aiItem.statements.map(s => ({ text: s.text || String(s), correct: !!s.correct }))
@@ -1900,7 +1791,6 @@ Kembalikan HANYA JSON valid berbentuk array of objects (tanpa teks pembuka/penut
                 { left: `${q.conceptTerm} 3`, rightText: `Definisi konsep 3 pada ${meta.topic}` }
               ];
           q.pairs = pairs.map(p => ({ left: p.left, rightText: p.rightText }));
-          // Rotate right column for display matching
           const codes = ['A', 'B', 'C', 'D'].slice(0, pairs.length);
           q.shuffledRight = pairs.map((p, i) => ({
             code: codes[i],
@@ -1948,11 +1838,7 @@ Kembalikan HANYA JSON valid berbentuk array of objects (tanpa teks pembuka/penut
 
       while (facts.length < 8) {
         const base = facts[facts.length % sentences.length];
-        facts.push({
-          term: `${base.term} (${topic})`,
-          desc: base.desc,
-          sentence: base.sentence
-        });
+        facts.push({ term: `${base.term} (${topic})`, desc: base.desc, sentence: base.sentence });
       }
 
       return { sentences, facts };
@@ -2224,7 +2110,6 @@ Kembalikan HANYA JSON valid berbentuk array of objects (tanpa teks pembuka/penut
         qContainer.appendChild(block);
       });
 
-      // Render Kunci & Pembahasan
       const ansContainer = document.getElementById('answersContainer');
       ansContainer.innerHTML = `
         <table class="data-table">
@@ -2249,7 +2134,6 @@ Kembalikan HANYA JSON valid berbentuk array of objects (tanpa teks pembuka/penut
         </table>
       `;
 
-      // Render Kisi-Kisi & Analisis
       const kisiContainer = document.getElementById('kisikisiContainer');
       const diffCounts = {};
       const typeCounts = {};
@@ -2308,7 +2192,7 @@ Kembalikan HANYA JSON valid berbentuk array of objects (tanpa teks pembuka/penut
       if (tabName === 'kisikisi') document.getElementById('tabKisikisi').classList.remove('hidden');
     }
 
-    // ==================== IMAGE GENERATION (GEMINI IMAGE API + CANVAS FALLBACK) ====================
+    // ==================== IMAGE GENERATION ====================
     function updateQuestionPrompt(qNum, val) {
       const q = state.examData.questions.find(item => item.num === qNum);
       if (q) q.visualPrompt = val;
@@ -2334,9 +2218,7 @@ Kembalikan HANYA JSON valid berbentuk array of objects (tanpa teks pembuka/penut
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               contents: [{ role: 'user', parts: [{ text: promptText }] }],
-              generationConfig: {
-                responseModalities: ['IMAGE', 'TEXT']
-              }
+              generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
             })
           });
           const data = await resp.json();

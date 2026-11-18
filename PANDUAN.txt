@@ -1,0 +1,10 @@
+AutoExam.ai v2 — Generator Soal, Materi, & Gambar AI Terintegrasi Gemini
+==========================================================================
+
+Cara Menggunakan:
+1. Ekstrak file ZIP ini ke folder di komputer Anda.
+2. Klik dua kali file `index.html` untuk membukanya di browser (Chrome, Edge, Safari, atau Firefox).
+3. (Opsional) Masukkan Gemini API Key dari Google AI Studio pada bagian atas halaman untuk mengaktifkan pembuatan materi, soal HOTS, dan gambar ilustrasi AI secara penuh. Tanpa API Key, aplikasi tetap berjalan normal menggunakan mesin lokal offline.
+4. Pilih Kurikulum, Jenjang/Kelas, Mata Pelajaran, dan Topik — ringkasan materi pada Langkah 2 akan otomatis menyesuaikan konteks yang dipilih.
+5. Atur komposisi soal (hingga 50 butir) lalu klik "Lanjut Meracik Soal Ujian".
+6. Unduh hasil ujian beserta kunci jawaban dan kisi-kisi ke format MS Word (.doc) atau cetak langsung ke PDF.
