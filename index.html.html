@@ -1,0 +1,2685 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoExam.ai v2 — Generator Soal & Gambar AI Terintegrasi Gemini</title>
+  <style>
+    :root {
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --surface-alt: #F1F5F9;
+      --border: #E2E8F0;
+      --border-strong: #CBD5E1;
+      --text: #0F172A;
+      --text-muted: #475569;
+      --text-light: #64748B;
+      --primary: #F97316;
+      --primary-hover: #EA580C;
+      --primary-soft: #FFF7ED;
+      --primary-border: #FED7AA;
+      --success: #10B981;
+      --success-soft: #ECFDF5;
+      --info: #0284C7;
+      --info-soft: #F0F9FF;
+      --danger: #EF4444;
+      --danger-soft: #FEF2F2;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+
+    /* Top Header */
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .topbar-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #F97316, #EA580C);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 4px 10px rgba(249, 115, 22, 0.28);
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .brand-title span {
+      color: var(--primary);
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(249, 115, 22, 0.25);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border-color: var(--border-strong);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--surface-alt);
+    }
+
+    .btn-soft {
+      background: var(--primary-soft);
+      color: var(--primary-hover);
+      border-color: var(--primary-border);
+    }
+
+    .btn-soft:hover:not(:disabled) {
+      background: #FFEDD5;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .btn-success:hover:not(:disabled) {
+      background: #059669;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+
+    .btn-lg {
+      padding: 13px 24px;
+      font-size: 15px;
+      border-radius: 10px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 20px 60px;
+    }
+
+    /* Cards & Sections */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+    }
+
+    .card-ai {
+      background: linear-gradient(180deg, #FFFBF7 0%, #FFFFFF 100%);
+      border: 1.5px solid var(--primary-border);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .step-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      border: 1px solid var(--primary-border);
+      font-size: 13px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 820px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+      .topbar-inner {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* Form Controls */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      color: var(--text);
+      background: var(--surface);
+      font-family: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.14);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 150px;
+      line-height: 1.6;
+    }
+
+    .api-input-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .api-input-row input {
+      flex: 1;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    /* Curriculum Selector Pills */
+    .curr-card {
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: var(--surface);
+    }
+
+    .curr-card:hover {
+      border-color: var(--primary-border);
+      background: #FFFBF7;
+    }
+
+    .curr-card.active {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.12);
+    }
+
+    .curr-name {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .curr-desc {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    .info-banner {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: var(--info-soft);
+      border: 1px solid #BAE6FD;
+      color: #0369A1;
+      font-size: 13px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    /* Input Source Tabs (TEKS | DOCX | TXT) */
+    .source-tabs {
+      display: inline-flex;
+      background: var(--surface-alt);
+      padding: 4px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+
+    .source-tab {
+      padding: 7px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .source-tab.active {
+      background: var(--surface);
+      color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .upload-dropzone {
+      border: 2px dashed var(--border-strong);
+      border-radius: 10px;
+      padding: 28px 20px;
+      text-align: center;
+      background: var(--bg);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .upload-dropzone:hover {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    /* Question Type Counter Rows */
+    .qtype-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--surface);
+      gap: 12px;
+    }
+
+    .qtype-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .qtype-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .qtype-sub {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    .stepper {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .stepper button {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: var(--surface-alt);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .stepper button:hover {
+      background: #E2E8F0;
+    }
+
+    .stepper input {
+      width: 48px;
+      height: 32px;
+      border: none;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      text-align: center;
+      font-weight: 700;
+      border-radius: 0;
+      padding: 0;
+    }
+
+    /* Visual Option Toggles */
+    .visual-card {
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .visual-card.active {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .visual-card input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      margin-top: 2px;
+    }
+
+    /* Badge Pill */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .pill-orange {
+      background: var(--primary-soft);
+      color: var(--primary-hover);
+      border: 1px solid var(--primary-border);
+    }
+
+    .pill-green {
+      background: var(--success-soft);
+      color: #047857;
+      border: 1px solid #A7F3D0;
+    }
+
+    .pill-slate {
+      background: var(--surface-alt);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    /* Loading View */
+    .loading-box {
+      max-width: 560px;
+      margin: 48px auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 28px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .spinner {
+      width: 52px;
+      height: 52px;
+      border: 4px solid var(--primary-soft);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.85s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: var(--surface-alt);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 18px 0 12px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #F97316, #FB923C);
+      width: 0%;
+      transition: width 0.25s ease;
+    }
+
+    /* Result Tabs */
+    .result-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      background: var(--surface-alt);
+      padding: 5px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .nav-tab {
+      padding: 8px 16px;
+      border-radius: 7px;
+      font-size: 13.5px;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .nav-tab.active {
+      background: var(--surface);
+      color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Exam Paper Preview */
+    .exam-sheet {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .exam-kop {
+      border-bottom: 3px double var(--text);
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .exam-kop h2 {
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 4px;
+    }
+
+    .exam-meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      font-size: 13.5px;
+    }
+
+    .exam-meta-table td {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+    }
+
+    .question-block {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .question-block:last-child {
+      border-bottom: none;
+    }
+
+    .q-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .q-num {
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .q-text {
+      font-size: 14.5px;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .q-options {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-left: 16px;
+    }
+
+    .q-options li {
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    /* AI Image Studio Box inside Question */
+    .ai-visual-box {
+      margin: 12px 0;
+      padding: 14px;
+      border-radius: 10px;
+      background: #FFFBF7;
+      border: 1px dashed #FDBA74;
+    }
+
+    .ai-visual-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .ai-visual-controls input {
+      flex: 1;
+      min-width: 220px;
+      font-size: 13px;
+      padding: 7px 10px;
+    }
+
+    .generated-img-wrap {
+      margin-top: 12px;
+      text-align: center;
+      background: #fff;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .generated-img-wrap img {
+      max-width: 100%;
+      max-height: 320px;
+      border-radius: 6px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Tables in Kisi-kisi & Matching */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      margin-top: 10px;
+    }
+
+    .data-table th,
+    .data-table td {
+      border: 1px solid var(--border-strong);
+      padding: 9px 11px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .data-table th {
+      background: var(--surface-alt);
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: #0F172A;
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-left: 4px solid var(--primary);
+      animation: slideIn 0.22s ease;
+      max-width: 400px;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(24px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Print Styles */
+    @media print {
+      body { background: #fff; }
+      .topbar, .result-toolbar, .no-print, .ai-visual-controls {
+        display: none !important;
+      }
+      .container {
+        max-width: 100%;
+        padding: 0;
+      }
+      .exam-sheet {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+      }
+      .ai-visual-box {
+        border: none;
+        background: transparent;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Top Header -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand" onclick="goToView('setup')">
+        <div class="brand-logo">AE</div>
+        <div>
+          <div class="brand-title">AutoExam<span>.ai</span></div>
+          <div class="brand-sub">Generator Soal Ujian, Ilustrasi AI &amp; Kisi-Kisi Terintegrasi Gemini</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span id="headerAiBadge" class="pill pill-slate">⚪ Mode Lokal Offline</span>
+        <button id="btnLastResult" class="btn btn-soft btn-sm hidden" onclick="loadLastSavedExam()">
+          📂 Lihat Hasil Soal Terakhir
+        </button>
+        <button id="btnBackSetup" class="btn btn-secondary btn-sm hidden" onclick="goToView('setup')">
+          ← Kembali ke Pengaturan
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ==================== VIEW 1: SETUP / PENGATURAN ==================== -->
+    <section id="viewSetup">
+
+      <!-- Card 0: Integrasi Gemini API Key -->
+      <div class="card card-ai">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="step-badge">✨</span> Integrasi Google Gemini AI (Opsional / Real AI)
+          </div>
+          <span id="aiModePill" class="pill pill-slate">Mode Lokal (Tanpa API Key)</span>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="geminiApiKey">Gemini API Key (Disimpan aman di browser Anda)</label>
+            <div class="api-input-row">
+              <input type="password" id="geminiApiKey" placeholder="Tempel AIzaSy... di sini untuk mengaktifkan AI generatif" oninput="handleApiKeyInput()" />
+              <button type="button" class="btn btn-secondary btn-sm" onclick="toggleApiKeyVisibility()" title="Tampilkan/Sembunyikan Key">👁️</button>
+              <button type="button" class="btn btn-soft btn-sm" onclick="testGeminiConnection()">🔌 Tes Key</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="clearApiKey()">Hapus</button>
+            </div>
+            <div style="font-size:12px; color:var(--text-light); margin-top:2px;">
+              Belum punya key? Dapatkan gratis di <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" style="color:var(--primary); font-weight:600;">Google AI Studio</a>. Jika dikosongkan, aplikasi otomatis memakai mesin lokal offline.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="geminiModelSelect">Model AI yang Digunakan</label>
+            <select id="geminiModelSelect" onchange="saveAiSettings()">
+              <option value="gemini-3.5-flash-lite" selected>Gemini 3.5 Flash-Lite (Cepat &amp; Direkomendasikan)</option>
+              <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash-Lite (Hemat Kuota / Free Tier)</option>
+              <option value="gemini-3.8-flash">Gemini 3.8 Flash (Penalaran HOTS Mendalam)</option>
+            </select>
+            <div style="font-size:12px; color:var(--text-light); margin-top:2px;">
+              Pembuatan gambar AI memakai <strong>Gemini Flash Image</strong> (dengan fallback otomatis ke diagram lokal bila kuota gambar terbatas).
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 1: Kurikulum & Identitas -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="step-badge">1</span> Pengaturan Kurikulum &amp; Identitas Ujian</div>
+          <span class="pill pill-orange">Kurikulum &amp; Konteks</span>
+        </div>
+
+        <label style="display:block; margin-bottom:8px;">Pilih Kurikulum Pembelajaran</label>
+        <div class="grid-4" id="curriculumGrid">
+          <div class="curr-card active" data-curr="Merdeka" onclick="selectCurriculum('Merdeka', this)">
+            <div class="curr-name">Kurikulum Merdeka <span>✓</span></div>
+            <div class="curr-desc">Berbasis Capaian Pembelajaran (CP) &amp; Profil Pelajar Pancasila.</div>
+          </div>
+          <div class="curr-card" data-curr="K13" onclick="selectCurriculum('K13', this)">
+            <div class="curr-name">Kurikulum 2013 (K13) <span></span></div>
+            <div class="curr-desc">Berbasis Kompetensi Inti (KI), Kompetensi Dasar (KD) &amp; IPK.</div>
+          </div>
+          <div class="curr-card" data-curr="KBC" onclick="selectCurriculum('KBC', this)">
+            <div class="curr-name">Kurikulum KBC / Kemenag <span></span></div>
+            <div class="curr-desc">Integrasi literasi keagamaan, karakter &amp; kompetensi madrasah.</div>
+          </div>
+          <div class="curr-card" data-curr="Hybrid" onclick="selectCurriculum('Hybrid', this)">
+            <div class="curr-name">Kurikulum Hybrid / Nasional <span></span></div>
+            <div class="curr-desc">Kombinasi fleksibel CP Merdeka &amp; pemetaan indikator esensial.</div>
+          </div>
+        </div>
+
+        <div id="currInfoBanner" class="info-banner">
+          <span>ℹ️</span>
+          <div id="currInfoText">
+            <strong>Kurikulum Merdeka aktif:</strong> Soal dan kisi-kisi otomatis dipetakan ke Capaian Pembelajaran (CP), Tujuan Pembelajaran (TP), serta penalaran HOTS.
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-top:18px;">
+          <div class="form-group">
+            <label for="teacherName">Nama Guru / Penyusun</label>
+            <input type="text" id="teacherName" placeholder="Contoh: Budi Santoso, S.Pd." value="Ahmad Fauzi, S.Pd." />
+          </div>
+          <div class="form-group">
+            <label for="schoolName">Nama Sekolah / Madrasah</label>
+            <input type="text" id="schoolName" placeholder="Contoh: SMA Negeri 1 Nusantara" value="SMA Negeri 1 Merdeka" />
+          </div>
+          <div class="form-group">
+            <label for="examTitle">Judul / Jenis Ujian</label>
+            <input type="text" id="examTitle" placeholder="Contoh: Asesmen Sumatif Akhir Semester" value="Asesmen Sumatif Tengah Semester" />
+          </div>
+        </div>
+
+        <div class="grid-4" style="margin-top:14px;">
+          <div class="form-group">
+            <label for="eduLevel">Jenjang Pendidikan</label>
+            <select id="eduLevel" onchange="updateGradeOptions()">
+              <option value="SD/MI">SD / MI</option>
+              <option value="SMP/MTs">SMP / MTs</option>
+              <option value="SMA/MA" selected>SMA / MA</option>
+              <option value="SMK">SMK</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="gradeLevel">Kelas</label>
+            <select id="gradeLevel"></select>
+          </div>
+          <div class="form-group">
+            <label for="subjectName">Mata Pelajaran</label>
+            <input type="text" id="subjectName" placeholder="Contoh: Biologi / IPA / Sejarah" value="Biologi" />
+          </div>
+          <div class="form-group">
+            <label for="topicName">Topik / Materi Pokok</label>
+            <input type="text" id="topicName" placeholder="Contoh: Ekosistem dan Aliran Energi" value="Ekosistem dan Interaksi Antar Komponen" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Sumber Materi Pembelajaran -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="step-badge">2</span> Sumber Materi Pembelajaran</div>
+          <button type="button" class="btn btn-soft btn-sm" onclick="fillSampleMaterial()">✨ Isi Contoh Materi</button>
+        </div>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <div class="source-tabs">
+            <button type="button" class="source-tab active" data-src="teks" onclick="switchSourceTab('teks', this)">TEKS</button>
+            <button type="button" class="source-tab" data-src="docx" onclick="switchSourceTab('docx', this)">DOCX</button>
+            <button type="button" class="source-tab" data-src="txt" onclick="switchSourceTab('txt', this)">TXT</button>
+          </div>
+          <span id="wordCountBadge" class="pill pill-slate">0 kata</span>
+        </div>
+
+        <!-- Panel Upload File (for DOCX / TXT) -->
+        <div id="fileUploadPanel" class="hidden" style="margin-bottom:14px;">
+          <div class="upload-dropzone" onclick="document.getElementById('materialFileInput').click()">
+            <div style="font-size:28px; margin-bottom:6px;">📄</div>
+            <div style="font-weight:700; font-size:14px;" id="uploadTitle">Klik untuk memilih file materi (.DOCX atau .TXT)</div>
+            <div style="font-size:12px; color:var(--text-light); margin-top:4px;" id="uploadSubtitle">Isi dokumen akan diekstrak otomatis ke kolom materi di bawah.</div>
+            <input type="file" id="materialFileInput" accept=".txt,.docx" class="hidden" onchange="handleMaterialFile(event)" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="materialText">Ringkasan / Teks Materi Acuan Pembuatan Soal</label>
+          <textarea id="materialText" oninput="updateWordCount()" placeholder="Tempelkan ringkasan materi pelajaran, bab buku, atau catatan belajar di sini..."></textarea>
+        </div>
+      </div>
+
+      <!-- Card 3: Pengaturan Soal (6 Tipe, Opsi PG, 4 Level Kesulitan, Max 50 Soal) -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="step-badge">3</span> Pengaturan Komposisi Soal &amp; Tingkat Kesulitan</div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span id="totalQuestionsBadge" class="pill pill-orange">Total: 10 / 50 Soal</span>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="applyPreset50()">Preset 50 Soal</button>
+          </div>
+        </div>
+
+        <label style="display:block; margin-bottom:10px;">Jumlah Butir per Tipe Soal (Maksimal 50 Soal Total)</label>
+        <div class="grid-2">
+          <div class="qtype-item">
+            <div class="qtype-info">
+              <span class="qtype-title">1. Pilihan Ganda (PG)</span>
+              <span class="qtype-sub">Satu jawaban paling tepat dari opsi A–C/D/E</span>
+            </div>
+            <div class="stepper">
+              <button type="button" onclick="adjustQType('pg', -1)">−</button>
+              <input type="number" id="qty_pg" value="5" min="0" max="50" onchange="syncQTypeTotals()" />
+              <button type="button" onclick="adjustQType('pg', 1)">+</button>
+            </div>
+          </div>
+
+          <div class="qtype-item">
+            <div class="qtype-info">
+              <span class="qtype-title">2. Pilihan Ganda Kompleks</span>
+              <span class="qtype-sub">Memilih lebih dari satu pernyataan benar</span>
+            </div>
+            <div class="stepper">
+              <button type="button" onclick="adjustQType('pgk', -1)">−</button>
+              <input type="number" id="qty_pgk" value="1" min="0" max="50" onchange="syncQTypeTotals()" />
+              <button type="button" onclick="adjustQType('pgk', 1)">+</button>
+            </div>
+          </div>
+
+          <div class="qtype-item">
+            <div class="qtype-info">
+              <span class="qtype-title">3. Benar / Salah</span>
+              <span class="qtype-sub">Menentukan kebenaran pernyataan berdasarkan materi</span>
+            </div>
+            <div class="stepper">
+              <button type="button" onclick="adjustQType('bs', -1)">−</button>
+              <input type="number" id="qty_bs" value="1" min="0" max="50" onchange="syncQTypeTotals()" />
+              <button type="button" onclick="adjustQType('bs', 1)">+</button>
+            </div>
+          </div>
+
+          <div class="qtype-item">
+            <div class="qtype-info">
+              <span class="qtype-title">4. Menjodohkan</span>
+              <span class="qtype-sub">Memasangkan premis/istilah dengan deskripsi tepat</span>
+            </div>
+            <div class="stepper">
+              <button type="button" onclick="adjustQType('jodoh', -1)">−</button>
+              <input type="number" id="qty_jodoh" value="1" min="0" max="50" onchange="syncQTypeTotals()" />
+              <button type="button" onclick="adjustQType('jodoh', 1)">+</button>
+            </div>
+          </div>
+
+          <div class="qtype-item">
+            <div class="qtype-info">
+              <span class="qtype-title">5. Isian Singkat</span>
+              <span class="qtype-sub">Melengkapi istilah kunci atau jawaban singkat</span>
+            </div>
+            <div class="stepper">
+              <button type="button" onclick="adjustQType('isian', -1)">−</button>
+              <input type="number" id="qty_isian" value="1" min="0" max="50" onchange="syncQTypeTotals()" />
+              <button type="button" onclick="adjustQType('isian', 1)">+</button>
+            </div>
+          </div>
+
+          <div class="qtype-item">
+            <div class="qtype-info">
+              <span class="qtype-title">6. Uraian / Esai</span>
+              <span class="qtype-sub">Jawaban analitis terbuka disertai rubrik</span>
+            </div>
+            <div class="stepper">
+              <button type="button" onclick="adjustQType('uraian', -1)">−</button>
+              <input type="number" id="qty_uraian" value="1" min="0" max="50" onchange="syncQTypeTotals()" />
+              <button type="button" onclick="adjustQType('uraian', 1)">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-top:18px;">
+          <div class="form-group">
+            <label for="pgOptionCount">Jumlah Opsi Jawaban Pilihan Ganda</label>
+            <select id="pgOptionCount">
+              <option value="3">3 Opsi (A, B, C) — Umum untuk SD</option>
+              <option value="4">4 Opsi (A, B, C, D) — Umum untuk SMP</option>
+              <option value="5" selected>5 Opsi (A, B, C, D, E) — Umum untuk SMA/SMK</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="difficultyMode">Tingkat Kesulitan (4 Level Kognitif)</label>
+            <select id="difficultyMode">
+              <option value="proporsional" selected>Campuran Proporsional (Level 1 s.d. Level 4)</option>
+              <option value="level1">Level 1 — Mudah (C1–C2: Mengingat &amp; Memahami)</option>
+              <option value="level2">Level 2 — Sedang (C3: Menerapkan Konsep)</option>
+              <option value="level3">Level 3 — Sulit / HOTS (C4: Menganalisis)</option>
+              <option value="level4">Level 4 — Sangat Sulit / Penalaran Lanjut (C5–C6)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="visualCount">Jumlah Soal dengan Dukungan Visual AI</label>
+            <input type="number" id="visualCount" value="3" min="0" max="50" />
+          </div>
+        </div>
+
+        <!-- Visual & Multimedia Options -->
+        <div style="margin-top:18px;">
+          <label style="display:block; margin-bottom:8px;">Jenis Visual &amp; Multimedia Pendukung Soal (Opsional)</label>
+          <div class="grid-3">
+            <label class="visual-card active" onclick="toggleVisualCard(this)">
+              <input type="checkbox" id="vis_ilustrasi" checked />
+              <div>
+                <div style="font-weight:700; font-size:13.5px; color:var(--text);">🎨 Ilustrasi AI</div>
+                <div style="font-size:12px; color:var(--text-light);">Gambar ilustrasi tematik sesuai konteks soal.</div>
+              </div>
+            </label>
+            <label class="visual-card active" onclick="toggleVisualCard(this)">
+              <input type="checkbox" id="vis_diagram" checked />
+              <div>
+                <div style="font-weight:700; font-size:13.5px; color:var(--text);">📊 Diagram / Grafik</div>
+                <div style="font-size:12px; color:var(--text-light);">Skema alur, siklus, dan bagan hubungan proses.</div>
+              </div>
+            </label>
+            <label class="visual-card active" onclick="toggleVisualCard(this)">
+              <input type="checkbox" id="vis_petakonsep" checked />
+              <div>
+                <div style="font-weight:700; font-size:13.5px; color:var(--text);">🧠 Peta Konsep</div>
+                <div style="font-size:12px; color:var(--text-light);">Peta hubungan antar istilah utama dalam materi.</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div style="margin-top:24px; display:flex; justify-content:flex-end; gap:12px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-primary btn-lg" onclick="startExamGeneration()">
+            🚀 Lanjut Meracik Soal Ujian
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 2: LOADING / PROSES AI ==================== -->
+    <section id="viewLoading" class="hidden">
+      <div class="loading-box">
+        <div class="spinner"></div>
+        <h3 id="loadingTitle" style="font-size:19px; font-weight:800; margin-bottom:6px;">Meracik Naskah Ujian &amp; Kisi-Kisi...</h3>
+        <p id="loadingStepText" style="font-size:13.5px; color:var(--text-muted);">Menganalisis teks materi pembelajaran...</p>
+        <div class="progress-track">
+          <div id="loadingBar" class="progress-fill"></div>
+        </div>
+        <div id="loadingPercent" style="font-size:12.5px; font-weight:700; color:var(--primary);">0%</div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 3: HASIL UJIAN & EKSPOR ==================== -->
+    <section id="viewResults" class="hidden">
+
+      <!-- Action Toolbar -->
+      <div class="result-toolbar no-print">
+        <div class="nav-tabs">
+          <button class="nav-tab active" data-tab="naskah" onclick="switchResultTab('naskah', this)">📄 Naskah Soal</button>
+          <button class="nav-tab" data-tab="kunci" onclick="switchResultTab('kunci', this)">🔑 Kunci &amp; Pembahasan</button>
+          <button class="nav-tab" data-tab="kisikisi" onclick="switchResultTab('kisikisi', this)">📋 Kisi-kisi &amp; Analisis</button>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+          <button id="btnGenAllImages" class="btn btn-soft btn-sm" onclick="generateAllImages()">
+            🎨 Generate Semua Gambar (<span id="pendingImgCount">0</span>)
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="copyCurrentToWord()">
+            📋 Salin ke MS Word
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="downloadWordDoc()">
+            ⬇️ Unduh MS Word (.doc)
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="window.print()">
+            🖨️ Cetak / PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab 1: Naskah Soal -->
+      <div id="tabNaskah" class="exam-sheet">
+        <div class="exam-kop">
+          <h2 id="sheetSchoolName">SMA NEGERI 1 MERDEKA</h2>
+          <div style="font-weight:700; font-size:15px;" id="sheetExamTitle">ASESMEN SUMATIF TENGAH SEMESTER</div>
+          <div style="font-size:12.5px; color:var(--text-muted);" id="sheetCurrLabel">Kurikulum Merdeka</div>
+        </div>
+
+        <table class="exam-meta-table">
+          <tr>
+            <td style="width:18%;"><strong>Mata Pelajaran</strong></td>
+            <td style="width:32%;" id="metaSubject">-</td>
+            <td style="width:18%;"><strong>Jenjang / Kelas</strong></td>
+            <td style="width:32%;" id="metaGrade">-</td>
+          </tr>
+          <tr>
+            <td><strong>Topik / Materi</strong></td>
+            <td id="metaTopic">-</td>
+            <td><strong>Guru Penyusun</strong></td>
+            <td id="metaTeacher">-</td>
+          </tr>
+          <tr>
+            <td><strong>Jumlah Soal</strong></td>
+            <td id="metaTotalQ">-</td>
+            <td><strong>Nama Siswa</strong></td>
+            <td>....................................................</td>
+          </tr>
+        </table>
+
+        <div style="background:var(--surface-alt); padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:18px; border-left:4px solid var(--primary);">
+          <strong>Petunjuk Pengerjaan:</strong> Bacalah setiap butir soal dengan cermat sebelum menjawab. Kerjakan soal yang paling mudah terlebih dahulu.
+        </div>
+
+        <div id="questionsContainer"></div>
+      </div>
+
+      <!-- Tab 2: Kunci & Pembahasan -->
+      <div id="tabKunci" class="exam-sheet hidden">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h3 style="font-size:18px; font-weight:800;">Kunci Jawaban &amp; Pembahasan Soal</h3>
+            <p style="font-size:13px; color:var(--text-light);">Dilengkapi penjelasan konsep dan level kognitif setiap nomor.</p>
+          </div>
+          <button class="btn btn-secondary btn-sm no-print" onclick="copySectionHtml('answersContainer', 'Kunci &amp; pembahasan berhasil disalin!')">
+            📋 Salin Kunci &amp; Pembahasan
+          </button>
+        </div>
+        <div id="answersContainer"></div>
+      </div>
+
+      <!-- Tab 3: Kisi-kisi & Analisis -->
+      <div id="tabKisikisi" class="exam-sheet hidden">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h3 style="font-size:18px; font-weight:800;">Kisi-Kisi Penulisan Soal &amp; Analisis Butir</h3>
+            <p style="font-size:13px; color:var(--text-light);">Pemetaan capaian pembelajaran, indikator, tipe soal, dan distribusi tingkat kesulitan.</p>
+          </div>
+          <button class="btn btn-secondary btn-sm no-print" onclick="copySectionHtml('kisikisiContainer', 'Tabel kisi-kisi berhasil disalin!')">
+            📋 Salin Kisi-Kisi
+          </button>
+        </div>
+        <div id="kisikisiContainer"></div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    // ==================== STATE & STORAGE ====================
+    let state = {
+      curriculum: 'Merdeka',
+      sourceTab: 'teks',
+      examData: null
+    };
+
+    const CURRICULUM_INFO = {
+      Merdeka: '<strong>Kurikulum Merdeka aktif:</strong> Soal dan kisi-kisi otomatis dipetakan ke Capaian Pembelajaran (CP), Tujuan Pembelajaran (TP), serta penalaran HOTS.',
+      K13: '<strong>Kurikulum 2013 (K13) aktif:</strong> Pemetaan soal disusun berdasarkan Kompetensi Inti (KI), Kompetensi Dasar (KD), dan Indikator Pencapaian Kompetensi (IPK).',
+      KBC: '<strong>Kurikulum KBC / Kemenag aktif:</strong> Kisi-kisi menyesuaikan standar kompetensi madrasah dengan integrasi literasi, karakter, dan analisis kontekstual.',
+      Hybrid: '<strong>Kurikulum Hybrid aktif:</strong> Menggabungkan struktur Capaian Pembelajaran esensial dengan indikator terukur lintas kompetensi.'
+    };
+
+    const GRADE_OPTIONS = {
+      'SD/MI': ['Kelas 1', 'Kelas 2', 'Kelas 3', 'Kelas 4', 'Kelas 5', 'Kelas 6'],
+      'SMP/MTs': ['Kelas 7', 'Kelas 8', 'Kelas 9'],
+      'SMA/MA': ['Kelas 10', 'Kelas 11', 'Kelas 12'],
+      'SMK': ['Kelas 10 SMK', 'Kelas 11 SMK', 'Kelas 12 SMK']
+    };
+
+    const SAMPLE_TEXT = `Ekosistem adalah suatu sistem ekologi yang terbentuk oleh hubungan timbal balik tak terpisahkan antara makhluk hidup dengan lingkungannya. Ekosistem terdiri atas dua komponen utama, yaitu komponen biotik dan komponen abiotik. Komponen biotik meliputi seluruh makhluk hidup seperti produsen, konsumen, dan dekomposer. Produsen merupakan organisme autotrof seperti tumbuhan hijau dan fitoplankton yang mampu menghasilkan makanan sendiri melalui proses fotosintesis dengan bantuan cahaya matahari.
+
+Konsumen adalah organisme heterotrof yang memperoleh energi dengan memakan organisme lain, terdiri dari konsumen tingkat I (herbivora), konsumen tingkat II (karnivora kecil), hingga konsumen puncak. Dekomposer atau pengurai seperti bakteri saprofit dan jamur berfungsi untuk menguraikan sisa-sisa organisme mati menjadi zat anorganik yang menyuburkan tanah. Sementara itu, komponen abiotik meliputi faktor fisik dan kimia seperti suhu, cahaya matahari, air, kelembapan, derajat keasaman (pH), dan mineral tanah.
+
+Aliran energi dalam ekosistem berlangsung satu arah dari matahari ke produsen, lalu berpindah ke konsumen melalui rantai makanan dan jaring-jaring makanan. Pada setiap perpindahan tingkat trofik, hanya sekitar 10 persen energi yang tersimpan sebagai biomassa, sedangkan sebagian besar energi dilepaskan sebagai panas melalui respirasi seluler. Daur biogeokimia seperti siklus karbon, siklus nitrogen, dan siklus air menjaga ketersediaan unsur-unsur penting agar keseimbangan ekosistem tetap terjaga secara berkelanjutan.`;
+
+    // ==================== INITIALIZATION ====================
+    window.addEventListener('DOMContentLoaded', () => {
+      loadAiSettings();
+      updateGradeOptions();
+      document.getElementById('gradeLevel').value = 'Kelas 10';
+      fillSampleMaterial(true);
+      syncQTypeTotals();
+      checkSavedExam();
+    });
+
+    function showToast(message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<span>🔔</span><span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(20px)';
+        toast.style.transition = 'all 0.2s ease';
+        setTimeout(() => toast.remove(), 220);
+      }, 3600);
+    }
+
+    // ==================== GEMINI API KEY MANAGEMENT ====================
+    function getApiKey() {
+      return (document.getElementById('geminiApiKey').value || '').trim();
+    }
+
+    function getSelectedModel() {
+      return document.getElementById('geminiModelSelect').value || 'gemini-3.5-flash-lite';
+    }
+
+    function handleApiKeyInput() {
+      saveAiSettings();
+      updateAiBadges();
+    }
+
+    function saveAiSettings() {
+      try {
+        localStorage.setItem('autoexam_gemini_key', getApiKey());
+        localStorage.setItem('autoexam_gemini_model', getSelectedModel());
+      } catch (e) {}
+    }
+
+    function loadAiSettings() {
+      try {
+        const savedKey = localStorage.getItem('autoexam_gemini_key') || '';
+        const savedModel = localStorage.getItem('autoexam_gemini_model') || 'gemini-3.5-flash-lite';
+        document.getElementById('geminiApiKey').value = savedKey;
+        const sel = document.getElementById('geminiModelSelect');
+        if ([...sel.options].some(o => o.value === savedModel)) {
+          sel.value = savedModel;
+        }
+      } catch (e) {}
+      updateAiBadges();
+    }
+
+    function updateAiBadges() {
+      const key = getApiKey();
+      const headerBadge = document.getElementById('headerAiBadge');
+      const cardPill = document.getElementById('aiModePill');
+      if (key.length > 10) {
+        headerBadge.className = 'pill pill-green';
+        headerBadge.textContent = '🟢 Gemini AI Aktif';
+        cardPill.className = 'pill pill-green';
+        cardPill.textContent = 'Terhubung ke Gemini API';
+      } else {
+        headerBadge.className = 'pill pill-slate';
+        headerBadge.textContent = '⚪ Mode Lokal Offline';
+        cardPill.className = 'pill pill-slate';
+        cardPill.textContent = 'Mode Lokal (Tanpa API Key)';
+      }
+    }
+
+    function toggleApiKeyVisibility() {
+      const inp = document.getElementById('geminiApiKey');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    function clearApiKey() {
+      document.getElementById('geminiApiKey').value = '';
+      saveAiSettings();
+      updateAiBadges();
+      showToast('API Key dihapus. Aplikasi beralih ke Mode Lokal Offline.');
+    }
+
+    async function testGeminiConnection() {
+      const apiKey = getApiKey();
+      if (!apiKey) {
+        showToast('Masukkan Gemini API Key terlebih dahulu untuk menguji koneksi.');
+        return;
+      }
+      showToast('Menguji koneksi ke Gemini API...');
+      try {
+        const text = await callGeminiTextWithFallback(apiKey, 'Balas hanya dengan kata: TERHUBUNG', false);
+        if (text) {
+          showToast('Koneksi Gemini API berhasil! Siap meracik soal & gambar AI.');
+        }
+      } catch (err) {
+        showToast('Gagal terhubung ke Gemini API: ' + err.message);
+      }
+    }
+
+    async function callGeminiTextWithFallback(apiKey, promptText, expectJson = true) {
+      const preferred = getSelectedModel();
+      const candidates = [preferred, 'gemini-3.5-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.5-flash']
+        .filter((v, idx, arr) => arr.indexOf(v) === idx);
+
+      let lastErr = null;
+      for (const model of candidates) {
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+          const body = {
+            contents: [{ role: 'user', parts: [{ text: promptText }] }],
+            generationConfig: {
+              temperature: 0.65
+            }
+          };
+          if (expectJson) {
+            body.generationConfig.responseMimeType = 'application/json';
+          }
+          const resp = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          });
+          const data = await resp.json();
+          if (!resp.ok) {
+            const msg = data?.error?.message || `HTTP ${resp.status}`;
+            if (resp.status === 404 || msg.toLowerCase().includes('not found') || msg.toLowerCase().includes('deprecated')) {
+              lastErr = new Error(msg);
+              continue; // try next fallback model
+            }
+            throw new Error(msg);
+          }
+          const outText = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          if (!outText) throw new Error('Respons AI kosong.');
+          return outText;
+        } catch (err) {
+          lastErr = err;
+          if (err.message && (err.message.includes('API_KEY_INVALID') || err.message.includes('API key not valid'))) {
+            throw new Error('API Key tidak valid. Periksa kembali key Anda di Google AI Studio.');
+          }
+        }
+      }
+      throw lastErr || new Error('Semua model Gemini gagal dihubungi.');
+    }
+
+    // ==================== NAVIGATION & FORM CONTROLS ====================
+    function goToView(viewName) {
+      document.getElementById('viewSetup').classList.add('hidden');
+      document.getElementById('viewLoading').classList.add('hidden');
+      document.getElementById('viewResults').classList.add('hidden');
+
+      if (viewName === 'setup') {
+        document.getElementById('viewSetup').classList.remove('hidden');
+        document.getElementById('btnBackSetup').classList.add('hidden');
+        checkSavedExam();
+      } else if (viewName === 'loading') {
+        document.getElementById('viewLoading').classList.remove('hidden');
+        document.getElementById('btnBackSetup').classList.add('hidden');
+      } else if (viewName === 'results') {
+        document.getElementById('viewResults').classList.remove('hidden');
+        document.getElementById('btnBackSetup').classList.remove('hidden');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectCurriculum(curr, el) {
+      state.curriculum = curr;
+      document.querySelectorAll('.curr-card').forEach(card => {
+        card.classList.remove('active');
+        card.querySelector('.curr-name span').textContent = '';
+      });
+      el.classList.add('active');
+      el.querySelector('.curr-name span').textContent = '✓';
+      document.getElementById('currInfoText').innerHTML = CURRICULUM_INFO[curr];
+    }
+
+    function updateGradeOptions() {
+      const edu = document.getElementById('eduLevel').value;
+      const gradeSel = document.getElementById('gradeLevel');
+      gradeSel.innerHTML = '';
+      (GRADE_OPTIONS[edu] || []).forEach(g => {
+        const opt = document.createElement('option');
+        opt.value = g;
+        opt.textContent = g;
+        gradeSel.appendChild(opt);
+      });
+    }
+
+    function switchSourceTab(tab, el) {
+      state.sourceTab = tab;
+      document.querySelectorAll('.source-tab').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      const uploadPanel = document.getElementById('fileUploadPanel');
+      if (tab === 'teks') {
+        uploadPanel.classList.add('hidden');
+      } else {
+        uploadPanel.classList.remove('hidden');
+        const ext = tab.toUpperCase();
+        document.getElementById('uploadTitle').textContent = `Klik untuk memilih file materi (.${ext})`;
+        document.getElementById('materialFileInput').accept = tab === 'docx' ? '.docx' : '.txt';
+      }
+    }
+
+    function fillSampleMaterial(silent = false) {
+      document.getElementById('materialText').value = SAMPLE_TEXT;
+      updateWordCount();
+      if (!silent) showToast('Contoh materi pembelajaran berhasil dimuat!');
+    }
+
+    function updateWordCount() {
+      const text = document.getElementById('materialText').value.trim();
+      const words = text ? text.split(/\s+/).length : 0;
+      document.getElementById('wordCountBadge').textContent = `${words} kata`;
+    }
+
+    // ==================== FILE READER (.TXT & .DOCX NATIVE) ====================
+    async function handleMaterialFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const name = file.name.toLowerCase();
+
+      try {
+        if (name.endsWith('.txt')) {
+          const text = await file.text();
+          document.getElementById('materialText').value = text;
+          updateWordCount();
+          showToast(`File "${file.name}" berhasil dibaca!`);
+        } else if (name.endsWith('.docx')) {
+          const buf = await file.arrayBuffer();
+          const extracted = await extractDocxText(buf);
+          if (extracted.trim()) {
+            document.getElementById('materialText').value = extracted.trim();
+            updateWordCount();
+            showToast(`Dokumen Word "${file.name}" berhasil diekstrak!`);
+          } else {
+            showToast('Tidak ditemukan teks pada file DOCX tersebut.');
+          }
+        } else {
+          showToast('Format file tidak didukung. Gunakan .TXT atau .DOCX.');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Gagal membaca file. Pastikan file tidak terenkripsi/rusak.');
+      }
+    }
+
+    async function extractDocxText(arrayBuffer) {
+      const bytes = new Uint8Array(arrayBuffer);
+      const view = new DataView(arrayBuffer);
+      let offset = 0;
+
+      while (offset < bytes.length - 30) {
+        const sig = view.getUint32(offset, true);
+        if (sig !== 0x04034b50) break;
+
+        const compression = view.getUint16(offset + 8, true);
+        const compSize = view.getUint32(offset + 18, true);
+        const nameLen = view.getUint16(offset + 26, true);
+        const extraLen = view.getUint16(offset + 28, true);
+
+        const nameBytes = bytes.slice(offset + 30, offset + 30 + nameLen);
+        const fileName = new TextDecoder().decode(nameBytes);
+        const dataStart = offset + 30 + nameLen + extraLen;
+        const compData = bytes.slice(dataStart, dataStart + compSize);
+
+        if (fileName === 'word/document.xml') {
+          let xmlBytes;
+          if (compression === 0) {
+            xmlBytes = compData;
+          } else if (compression === 8 && typeof DecompressionStream !== 'undefined') {
+            const ds = new DecompressionStream('deflate-raw');
+            const writer = ds.writable.getWriter();
+            writer.write(compData);
+            writer.close();
+            const resp = new Response(ds.readable);
+            xmlBytes = new Uint8Array(await resp.arrayBuffer());
+          } else {
+            throw new Error('Browser tidak mendukung DecompressionStream untuk DOCX.');
+          }
+
+          const xmlStr = new TextDecoder('utf-8').decode(xmlBytes);
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(xmlStr, 'application/xml');
+          const paragraphs = doc.getElementsByTagName('w:p');
+          const lines = [];
+          for (let p of paragraphs) {
+            const runs = p.getElementsByTagName('w:t');
+            let pText = '';
+            for (let r of runs) pText += r.textContent;
+            if (pText.trim()) lines.push(pText.trim());
+          }
+          return lines.join('\n\n');
+        }
+        offset = dataStart + compSize;
+      }
+      return '';
+    }
+
+    // ==================== QUESTION QUANTITY CONTROLS ====================
+    const Q_KEYS = ['pg', 'pgk', 'bs', 'jodoh', 'isian', 'uraian'];
+
+    function getTotalQuestions() {
+      return Q_KEYS.reduce((sum, k) => sum + (parseInt(document.getElementById('qty_' + k).value, 10) || 0), 0);
+    }
+
+    function adjustQType(key, delta) {
+      const input = document.getElementById('qty_' + key);
+      let val = (parseInt(input.value, 10) || 0) + delta;
+      if (val < 0) val = 0;
+      const currentOthers = getTotalQuestions() - (parseInt(input.value, 10) || 0);
+      if (currentOthers + val > 50) {
+        val = Math.max(0, 50 - currentOthers);
+        showToast('Batas maksimal total soal adalah 50 butir.');
+      }
+      input.value = val;
+      syncQTypeTotals();
+    }
+
+    function syncQTypeTotals() {
+      let running = 0;
+      Q_KEYS.forEach(k => {
+        const inp = document.getElementById('qty_' + k);
+        let v = Math.max(0, parseInt(inp.value, 10) || 0);
+        if (running + v > 50) {
+          v = Math.max(0, 50 - running);
+        }
+        inp.value = v;
+        running += v;
+      });
+      document.getElementById('totalQuestionsBadge').textContent = `Total: ${running} / 50 Soal`;
+      const visInput = document.getElementById('visualCount');
+      if (parseInt(visInput.value, 10) > running) {
+        visInput.value = running;
+      }
+      visInput.max = running;
+    }
+
+    function applyPreset50() {
+      document.getElementById('qty_pg').value = 30;
+      document.getElementById('qty_pgk').value = 5;
+      document.getElementById('qty_bs').value = 5;
+      document.getElementById('qty_jodoh').value = 3;
+      document.getElementById('qty_isian').value = 4;
+      document.getElementById('qty_uraian').value = 3;
+      document.getElementById('visualCount').value = 15;
+      syncQTypeTotals();
+      showToast('Komposisi 50 soal & 15 soal bergambar diterapkan!');
+    }
+
+    function toggleVisualCard(labelEl) {
+      setTimeout(() => {
+        const cb = labelEl.querySelector('input[type="checkbox"]');
+        labelEl.classList.toggle('active', cb.checked);
+      }, 0);
+    }
+
+    // ==================== MAIN GENERATION FLOW (GEMINI AI + LOCAL FALLBACK) ====================
+    function getExamConfigFromForm() {
+      const meta = {
+        curriculum: state.curriculum,
+        teacher: document.getElementById('teacherName').value.trim() || 'Guru Mata Pelajaran',
+        school: document.getElementById('schoolName').value.trim() || 'Sekolah',
+        examTitle: document.getElementById('examTitle').value.trim() || 'Ujian Evaluasi',
+        eduLevel: document.getElementById('eduLevel').value,
+        grade: document.getElementById('gradeLevel').value,
+        subject: document.getElementById('subjectName').value.trim() || 'Mata Pelajaran',
+        topic: document.getElementById('topicName').value.trim() || 'Topik Pembelajaran',
+        pgOptionCount: parseInt(document.getElementById('pgOptionCount').value, 10) || 5,
+        difficultyMode: document.getElementById('difficultyMode').value
+      };
+
+      const rawText = document.getElementById('materialText').value.trim();
+      const typePlan = [];
+      const counts = {
+        pg: parseInt(document.getElementById('qty_pg').value, 10) || 0,
+        pgk: parseInt(document.getElementById('qty_pgk').value, 10) || 0,
+        bs: parseInt(document.getElementById('qty_bs').value, 10) || 0,
+        jodoh: parseInt(document.getElementById('qty_jodoh').value, 10) || 0,
+        isian: parseInt(document.getElementById('qty_isian').value, 10) || 0,
+        uraian: parseInt(document.getElementById('qty_uraian').value, 10) || 0
+      };
+      Object.entries(counts).forEach(([type, count]) => {
+        for (let i = 0; i < count; i++) typePlan.push(type);
+      });
+
+      const difficulties = getDifficultyList(typePlan.length, meta.difficultyMode);
+      const visualTarget = Math.min(typePlan.length, parseInt(document.getElementById('visualCount').value, 10) || 0);
+      const visualTypes = getEnabledVisualTypes();
+
+      const visualIndices = new Set();
+      if (visualTarget > 0) {
+        const step = typePlan.length / visualTarget;
+        for (let i = 0; i < visualTarget; i++) {
+          visualIndices.add(Math.floor(i * step));
+        }
+      }
+
+      const plan = typePlan.map((type, idx) => ({
+        num: idx + 1,
+        type,
+        difficulty: difficulties[idx],
+        hasVisual: visualIndices.has(idx),
+        visualType: visualIndices.has(idx) ? visualTypes[idx % visualTypes.length] : null
+      }));
+
+      return { meta, rawText, plan };
+    }
+
+    async function startExamGeneration() {
+      const total = getTotalQuestions();
+      if (total < 1) {
+        showToast('Pilih minimal 1 butir soal terlebih dahulu.');
+        return;
+      }
+      const material = document.getElementById('materialText').value.trim();
+      if (material.length < 20) {
+        showToast('Masukkan teks materi pembelajaran minimal 1 kalimat.');
+        return;
+      }
+
+      const apiKey = getApiKey();
+      const { meta, rawText, plan } = getExamConfigFromForm();
+
+      goToView('loading');
+      const bar = document.getElementById('loadingBar');
+      const pctText = document.getElementById('loadingPercent');
+      const stepText = document.getElementById('loadingStepText');
+      const loadTitle = document.getElementById('loadingTitle');
+
+      const setProgress = (pct, msg) => {
+        bar.style.width = pct + '%';
+        pctText.textContent = pct + '%';
+        stepText.textContent = msg;
+      };
+
+      if (apiKey.length > 10) {
+        // REAL GEMINI GENERATIVE AI MODE (with batching for up to 50 questions)
+        loadTitle.textContent = 'Meracik Soal dengan Google Gemini AI...';
+        try {
+          const BATCH_SIZE = 15;
+          const allGenerated = [];
+          const totalBatches = Math.ceil(plan.length / BATCH_SIZE);
+
+          for (let b = 0; b < totalBatches; b++) {
+            const slice = plan.slice(b * BATCH_SIZE, (b + 1) * BATCH_SIZE);
+            const pctStart = Math.round((b / totalBatches) * 85) + 8;
+            setProgress(pctStart, `Batch ${b + 1}/${totalBatches}: Menyusun soal nomor ${slice[0].num} s.d. ${slice[slice.length - 1].num} via Gemini AI...`);
+
+            const batchQuestions = await generateBatchWithGemini(apiKey, meta, rawText, slice);
+            allGenerated.push(...batchQuestions);
+          }
+
+          setProgress(100, 'Menyusun tabel kisi-kisi, kunci jawaban & pembahasan...');
+          state.examData = {
+            meta,
+            rawText,
+            questions: allGenerated,
+            sourceEngine: 'Gemini AI',
+            createdAt: new Date().toLocaleString('id-ID')
+          };
+          saveSessionSilent();
+          setTimeout(() => {
+            renderExamResults();
+            goToView('results');
+            showToast(`Berhasil meracik ${allGenerated.length} soal menggunakan Gemini AI!`);
+          }, 250);
+          return;
+        } catch (err) {
+          console.error('Gemini AI error, falling back to local:', err);
+          showToast(`Gemini AI gagal (${err.message}). Beralih ke Mode Lokal...`);
+        }
+      }
+
+      // LOCAL OFFLINE ENGINE FALLBACK
+      loadTitle.textContent = 'Meracik Naskah Ujian & Kisi-Kisi (Mode Lokal)...';
+      const steps = [
+        'Menganalisis struktur & konsep utama materi...',
+        `Memetakan indikator sesuai Kurikulum ${state.curriculum}...`,
+        'Menyusun butir soal, pengecoh & kunci jawaban...',
+        'Menyiapkan prompt visual & tabel kisi-kisi...'
+      ];
+      let pct = 0;
+      const timer = setInterval(() => {
+        pct += 16;
+        if (pct > 100) pct = 100;
+        setProgress(pct, steps[Math.min(steps.length - 1, Math.floor(pct / 26))]);
+
+        if (pct >= 100) {
+          clearInterval(timer);
+          setTimeout(() => {
+            buildExamObjectLocal(meta, rawText, plan);
+            renderExamResults();
+            goToView('results');
+            showToast(`Berhasil meracik ${state.examData.questions.length} soal ujian!`);
+          }, 200);
+        }
+      }, 110);
+    }
+
+    async function generateBatchWithGemini(apiKey, meta, rawText, batchPlan) {
+      const letters = ['A', 'B', 'C', 'D', 'E'].slice(0, meta.pgOptionCount);
+      const specList = batchPlan.map(item => ({
+        num: item.num,
+        type: item.type,
+        difficulty: item.difficulty.label,
+        hasVisual: item.hasVisual,
+        visualType: item.visualType
+      }));
+
+      const prompt = `Anda adalah pakar penyusun asesmen pendidikan Indonesia. Buatlah ${batchPlan.length} butir soal ujian berkualitas tinggi berdasarkan materi berikut.
+
+IDENTITAS UJIAN:
+- Kurikulum: ${meta.curriculum}
+- Jenjang / Kelas: ${meta.eduLevel} / ${meta.grade}
+- Mata Pelajaran: ${meta.subject}
+- Topik: ${meta.topic}
+- Jumlah opsi Pilihan Ganda (pg): ${meta.pgOptionCount} opsi (${letters.join(', ')})
+
+MATERI PEMBELAJARAN:
+"""
+${rawText.slice(0, 12000)}
+"""
+
+SPESIFIKASI TIAP NOMOR SOAL (JSON):
+${JSON.stringify(specList)}
+
+ATURAN FORMAT OUTPUT:
+Kembalikan HANYA JSON valid berbentuk array of objects (tanpa teks pembuka/penutup) dengan struktur persis berikut untuk setiap item:
+[
+  {
+    "num": 1,
+    "type": "pg" | "pgk" | "bs" | "jodoh" | "isian" | "uraian",
+    "conceptTerm": "Sub-konsep/materi pokok singkat",
+    "indicator": "Indikator soal operasional sesuai Kurikulum ${meta.curriculum}",
+    "stem": "Teks pertanyaan lengkap (jika hasVisual true, awali dengan merujuk visualType tersebut)",
+    "visualPrompt": "Deskripsi visual/diagram edukatif yang jelas dalam Bahasa Indonesia jika hasVisual true, atau string kosong jika false",
+    "options": [{"label": "A", "text": "..."}], // WAJIB diisi jika type == "pg" sebanyak ${meta.pgOptionCount} opsi (${letters.join(', ')})
+    "statements": [{"text": "...", "correct": true}], // WAJIB diisi 4 pernyataan jika type == "pgk" (minimal 2 correct: true)
+    "rows": [{"statement": "...", "isTrue": true}], // WAJIB diisi 2-3 pernyataan jika type == "bs"
+    "pairs": [{"left": "Istilah 1", "rightText": "Pasangan benarnya"}], // WAJIB diisi 3 pasang jika type == "jodoh"
+    "answer": "Kunci jawaban lengkap & jelas",
+    "explanation": "Pembahasan rinci mengapa jawaban benar (dan rubrik skor jika uraian)"
+  }
+]`;
+
+      const rawResp = await callGeminiTextWithFallback(apiKey, prompt, true);
+      const cleaned = rawResp.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+      const parsed = JSON.parse(cleaned);
+      if (!Array.isArray(parsed)) throw new Error('Format JSON dari AI tidak sesuai.');
+
+      const typeLabelMap = {
+        pg: 'Pilihan Ganda',
+        pgk: 'Pilihan Ganda Kompleks',
+        bs: 'Benar / Salah',
+        jodoh: 'Menjodohkan',
+        isian: 'Isian Singkat',
+        uraian: 'Uraian / Esai'
+      };
+
+      return batchPlan.map((planItem, idx) => {
+        const aiItem = parsed[idx] || {};
+        const q = {
+          num: planItem.num,
+          type: planItem.type,
+          typeLabel: typeLabelMap[planItem.type] || 'Soal',
+          difficulty: planItem.difficulty,
+          hasVisual: planItem.hasVisual,
+          visualType: planItem.visualType,
+          visualPrompt: planItem.hasVisual ? (aiItem.visualPrompt || `${planItem.visualType}: ${aiItem.conceptTerm || meta.topic}`) : '',
+          imageDataUrl: null,
+          conceptTerm: aiItem.conceptTerm || meta.topic,
+          indicator: aiItem.indicator || `Peserta didik mampu ${planItem.difficulty.bloom.toLowerCase()} materi ${meta.topic}.`,
+          stem: aiItem.stem || `Jelaskan konsep utama pada materi ${meta.topic}!`,
+          answer: aiItem.answer || 'Lihat pembahasan',
+          explanation: aiItem.explanation || 'Sesuai konsep pada materi pembelajaran.'
+        };
+
+        if (q.type === 'pg') {
+          const opts = Array.isArray(aiItem.options) && aiItem.options.length >= 2
+            ? aiItem.options.slice(0, meta.pgOptionCount).map((o, i) => ({
+                label: letters[i] || String.fromCharCode(65 + i),
+                text: o.text || String(o)
+              }))
+            : letters.map((l, i) => ({ label: l, text: `Opsi ${l} terkait ${q.conceptTerm}` }));
+          q.options = opts;
+        } else if (q.type === 'pgk') {
+          q.statements = Array.isArray(aiItem.statements) && aiItem.statements.length >= 2
+            ? aiItem.statements.map(s => ({ text: s.text || String(s), correct: !!s.correct }))
+            : [
+                { text: `Pernyataan benar pertama mengenai ${q.conceptTerm}`, correct: true },
+                { text: `Pernyataan benar kedua mengenai ${q.conceptTerm}`, correct: true },
+                { text: `Pernyataan keliru mengenai ${q.conceptTerm}`, correct: false }
+              ];
+        } else if (q.type === 'bs') {
+          q.rows = Array.isArray(aiItem.rows) && aiItem.rows.length >= 1
+            ? aiItem.rows.map(r => ({ statement: r.statement || String(r), isTrue: !!r.isTrue }))
+            : [{ statement: `Konsep ${q.conceptTerm} merupakan bagian dari ${meta.topic}.`, isTrue: true }];
+        } else if (q.type === 'jodoh') {
+          const pairs = Array.isArray(aiItem.pairs) && aiItem.pairs.length >= 2
+            ? aiItem.pairs.slice(0, 3)
+            : [
+                { left: `${q.conceptTerm} 1`, rightText: `Definisi konsep 1 pada ${meta.topic}` },
+                { left: `${q.conceptTerm} 2`, rightText: `Definisi konsep 2 pada ${meta.topic}` },
+                { left: `${q.conceptTerm} 3`, rightText: `Definisi konsep 3 pada ${meta.topic}` }
+              ];
+          q.pairs = pairs.map(p => ({ left: p.left, rightText: p.rightText }));
+          // Rotate right column for display matching
+          const codes = ['A', 'B', 'C', 'D'].slice(0, pairs.length);
+          q.shuffledRight = pairs.map((p, i) => ({
+            code: codes[i],
+            text: pairs[(i + 1) % pairs.length].rightText
+          }));
+        }
+
+        return q;
+      });
+    }
+
+    // ==================== LOCAL NLP-LITE FALLBACK BUILDER ====================
+    function parseMaterialConcepts(rawText, topic) {
+      const clean = rawText.replace(/\s+/g, ' ').trim();
+      const rawSentences = clean
+        .split(/(?<=[.!?])\s+/)
+        .map(s => s.trim())
+        .filter(s => s.length >= 25);
+
+      const sentences = rawSentences.length > 0 ? rawSentences : [
+        `${topic} merupakan konsep fundamental yang berperan penting dalam memahami struktur dan fungsi materi secara menyeluruh.`,
+        `Penerapan ${topic} dalam kehidupan sehari-hari dipengaruhi oleh faktor internal dan eksternal yang saling berinteraksi.`,
+        `Analisis terhadap komponen utama ${topic} membantu menjelaskan hubungan sebab-akibat dalam suatu sistem.`
+      ];
+
+      const facts = [];
+      const stopWords = new Set(['adalah','merupakan','yaitu','yakni','dalam','dengan','untuk','yang','pada','dari','oleh','sebagai','atau','dan','serta','seperti','antara','dapat','akan','telah','secara','melalui','bahwa','karena','sehingga','hingga','sangat','lebih','hanya','setiap','seluruh','terdiri','meliputi']);
+
+      sentences.forEach((sent, idx) => {
+        const defMatch = sent.match(/^([^,.]{3,48})\s+(adalah|merupakan|yaitu|berfungsi untuk|berperan dalam)\s+(.+)[.!?]?$/i);
+        let term = '';
+        let desc = '';
+
+        if (defMatch) {
+          term = defMatch[1].trim();
+          desc = defMatch[3].replace(/[.!?]+$/, '').trim();
+        } else {
+          const words = sent.replace(/[^a-zA-Z0-9\s-]/g, '').split(/\s+/).filter(w => w.length > 4 && !stopWords.has(w.toLowerCase()));
+          term = words[0] ? words[0][0].toUpperCase() + words[0].slice(1) : `Konsep ${idx + 1}`;
+          desc = sent.replace(/[.!?]+$/, '');
+        }
+
+        facts.push({ term, desc, sentence: sent });
+      });
+
+      while (facts.length < 8) {
+        const base = facts[facts.length % sentences.length];
+        facts.push({
+          term: `${base.term} (${topic})`,
+          desc: base.desc,
+          sentence: base.sentence
+        });
+      }
+
+      return { sentences, facts };
+    }
+
+    function getDifficultyList(total, mode) {
+      const levels = [
+        { code: 'Level 1', label: 'Mudah (C1–C2)', bloom: 'Memahami' },
+        { code: 'Level 2', label: 'Sedang (C3)', bloom: 'Menerapkan' },
+        { code: 'Level 3', label: 'Sulit / HOTS (C4)', bloom: 'Menganalisis' },
+        { code: 'Level 4', label: 'Sangat Sulit (C5–C6)', bloom: 'Mengevaluasi' }
+      ];
+      const map = { level1: 0, level2: 1, level3: 2, level4: 3 };
+      const out = [];
+      for (let i = 0; i < total; i++) {
+        if (mode in map) {
+          out.push(levels[map[mode]]);
+        } else {
+          const ratio = i / Math.max(1, total);
+          if (ratio < 0.30) out.push(levels[0]);
+          else if (ratio < 0.65) out.push(levels[1]);
+          else if (ratio < 0.90) out.push(levels[2]);
+          else out.push(levels[3]);
+        }
+      }
+      return out;
+    }
+
+    function getEnabledVisualTypes() {
+      const types = [];
+      if (document.getElementById('vis_ilustrasi').checked) types.push('Ilustrasi AI');
+      if (document.getElementById('vis_diagram').checked) types.push('Diagram / Grafik');
+      if (document.getElementById('vis_petakonsep').checked) types.push('Peta Konsep');
+      return types.length ? types : ['Ilustrasi AI'];
+    }
+
+    function buildExamObjectLocal(meta, rawText, plan) {
+      const { facts } = parseMaterialConcepts(rawText, meta.topic);
+      const letters = ['A', 'B', 'C', 'D', 'E'].slice(0, meta.pgOptionCount);
+      const questions = [];
+
+      plan.forEach((pItem, idx) => {
+        const num = pItem.num;
+        const type = pItem.type;
+        const fact = facts[idx % facts.length];
+        const f2 = facts[(idx + 1) % facts.length];
+        const f3 = facts[(idx + 2) % facts.length];
+        const diff = pItem.difficulty;
+
+        const visualPrompt = pItem.hasVisual
+          ? `${pItem.visualType}: ${fact.term} pada materi ${meta.topic} (${meta.subject})`
+          : '';
+
+        let qObj = {
+          num,
+          type,
+          difficulty: diff,
+          hasVisual: pItem.hasVisual,
+          visualType: pItem.visualType,
+          visualPrompt,
+          imageDataUrl: null,
+          conceptTerm: fact.term,
+          indicator: `Peserta didik mampu ${diff.bloom.toLowerCase()} konsep ${fact.term} dalam materi ${meta.topic}.`
+        };
+
+        if (type === 'pg') {
+          const stemVariants = [
+            `Perhatikan penjelasan berikut terkait ${meta.topic}. Berdasarkan konsep ilmiah yang tepat, pernyataan yang mendefinisikan <strong>${fact.term}</strong> adalah ....`,
+            `Dalam kajian ${meta.topic}, komponen atau proses <strong>${fact.term}</strong> memiliki peran spesifik yaitu ....`,
+            `Apabila terjadi perubahan pada <strong>${fact.term}</strong> dalam sistem ${meta.topic}, maka dampak atau karakteristik utama yang paling sesuai adalah ....`
+          ];
+          qObj.typeLabel = 'Pilihan Ganda';
+          qObj.stem = (pItem.hasVisual ? `Perhatikan ${pItem.visualType.toLowerCase()} berikut! ` : '') + stemVariants[idx % stemVariants.length];
+
+          const correctIdx = idx % letters.length;
+          const pool = [
+            capitalizeFirst(fact.desc),
+            `Proses penguraian senyawa anorganik tanpa melibatkan ${fact.term.toLowerCase()} secara langsung`,
+            `Faktor eksternal yang menghambat seluruh aktivitas ${f2.term.toLowerCase()} pada kondisi ekstrem`,
+            `Mekanisme perpindahan materi yang hanya terjadi apabila ${f3.term.toLowerCase()} tidak berfungsi`,
+            `Komponen cadangan yang tidak memengaruhi keseimbangan ${meta.topic.toLowerCase()}`
+          ];
+
+          qObj.options = letters.map((ltr, oIdx) => {
+            if (oIdx === correctIdx) return { label: ltr, text: pool[0] };
+            const distractorText = pool[(oIdx === 0 ? correctIdx : oIdx) % pool.length];
+            return { label: ltr, text: distractorText };
+          });
+          qObj.answer = `${letters[correctIdx]}. ${pool[0]}`;
+          qObj.explanation = `Berdasarkan materi ${meta.topic}, ${fact.sentence} Oleh karena itu, opsi ${letters[correctIdx]} merupakan jawaban yang paling tepat.`;
+
+        } else if (type === 'pgk') {
+          qObj.typeLabel = 'Pilihan Ganda Kompleks';
+          qObj.stem = (pItem.hasVisual ? `Amati ${pItem.visualType.toLowerCase()} di bawah ini! ` : '') +
+            `Pilihlah <strong>lebih dari satu</strong> pernyataan yang benar mengenai <strong>${fact.term}</strong> dan <strong>${f2.term}</strong> pada materi ${meta.topic}:`;
+          qObj.statements = [
+            { text: capitalizeFirst(fact.sentence), correct: true },
+            { text: capitalizeFirst(f2.sentence), correct: true },
+            { text: `${fact.term} sama sekali tidak memiliki keterkaitan dengan ${meta.topic.toLowerCase()}.`, correct: false },
+            { text: `Keberadaan ${f2.term.toLowerCase()} selalu menghilangkan fungsi utama ${fact.term.toLowerCase()}.`, correct: false }
+          ];
+          qObj.answer = 'Pernyataan 1 dan Pernyataan 2 Benar';
+          qObj.explanation = `Pernyataan (1) dan (2) sesuai dengan konsep materi: "${fact.sentence}" serta "${f2.sentence}".`;
+
+        } else if (type === 'bs') {
+          qObj.typeLabel = 'Benar / Salah';
+          qObj.stem = (pItem.hasVisual ? `Berdasarkan ${pItem.visualType.toLowerCase()} berikut, tentukan ` : 'Tentukan ') +
+            `apakah pernyataan di bawah ini <strong>Benar</strong> atau <strong>Salah</strong> terkait ${meta.topic}:`;
+          qObj.rows = [
+            { statement: capitalizeFirst(fact.sentence), isTrue: true },
+            { statement: `Dalam ${meta.topic.toLowerCase()}, ${f2.term.toLowerCase()} bekerja secara terpisah tanpa dipengaruhi komponen lainnya.`, isTrue: false }
+          ];
+          qObj.answer = '1) Benar, 2) Salah';
+          qObj.explanation = `Pernyataan pertama benar sesuai fakta materi. Pernyataan kedua salah karena ${f2.sentence}`;
+
+        } else if (type === 'jodoh') {
+          qObj.typeLabel = 'Menjodohkan';
+          qObj.stem = `Pasangkan istilah/konsep di lajur kiri dengan penjelasan yang sesuai di lajur kanan terkait <strong>${meta.topic}</strong>:`;
+          qObj.pairs = [
+            { left: fact.term, rightText: capitalizeFirst(fact.desc) },
+            { left: f2.term, rightText: capitalizeFirst(f2.desc) },
+            { left: f3.term, rightText: capitalizeFirst(f3.desc) }
+          ];
+          qObj.shuffledRight = [
+            { code: 'A', text: capitalizeFirst(f2.desc) },
+            { code: 'B', text: capitalizeFirst(f3.desc) },
+            { code: 'C', text: capitalizeFirst(fact.desc) }
+          ];
+          qObj.answer = `1 → C (${fact.term}), 2 → A (${f2.term}), 3 → B (${f3.term})`;
+          qObj.explanation = `Pemetaan definisi sesuai materi: ${fact.term} berkaitan dengan ${fact.desc.toLowerCase()}; ${f2.term} berkaitan dengan ${f2.desc.toLowerCase()}; dan ${f3.term} berkaitan dengan ${f3.desc.toLowerCase()}.`;
+
+        } else if (type === 'isian') {
+          qObj.typeLabel = 'Isian Singkat';
+          qObj.stem = (pItem.hasVisual ? `Perhatikan ${pItem.visualType.toLowerCase()} berikut! ` : '') +
+            `Dalam kajian ${meta.topic}, komponen atau konsep yang dijelaskan sebagai <em>"${fact.desc.toLowerCase()}"</em> disebut sebagai ..............................`;
+          qObj.answer = fact.term;
+          qObj.explanation = `Merujuk pada materi pembelajaran: "${fact.sentence}", istilah kunci yang dimaksud adalah ${fact.term}.`;
+
+        } else if (type === 'uraian') {
+          qObj.typeLabel = 'Uraian / Esai';
+          qObj.stem = (pItem.hasVisual ? `Analisis ${pItem.visualType.toLowerCase()} di bawah ini! ` : '') +
+            `Jelaskan secara terperinci peran <strong>${fact.term}</strong> serta keterkaitannya dengan <strong>${f2.term}</strong> dalam menjaga keberlangsungan sistem pada materi ${meta.topic}!`;
+          qObj.answer = `${capitalizeFirst(fact.sentence)} Selain itu, ${f2.sentence.charAt(0).toLowerCase() + f2.sentence.slice(1)}`;
+          qObj.explanation = `Rubrik Penskoran (Skor Maksimal 4): Skor 4 jika peserta didik menjelaskan definisi/fungsi ${fact.term} dan hubungannya dengan ${f2.term} secara lengkap dan runtut.`;
+        }
+
+        questions.push(qObj);
+      });
+
+      state.examData = {
+        meta,
+        rawText,
+        questions,
+        sourceEngine: 'Mode Lokal',
+        createdAt: new Date().toLocaleString('id-ID')
+      };
+
+      saveSessionSilent();
+    }
+
+    function capitalizeFirst(str) {
+      if (!str) return '';
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    // ==================== RENDER RESULTS ====================
+    function renderExamResults() {
+      const { meta, questions } = state.examData;
+
+      document.getElementById('sheetSchoolName').textContent = meta.school.toUpperCase();
+      document.getElementById('sheetExamTitle').textContent = meta.examTitle.toUpperCase();
+      document.getElementById('sheetCurrLabel').textContent = `Kurikulum ${meta.curriculum}`;
+      document.getElementById('metaSubject').textContent = meta.subject;
+      document.getElementById('metaGrade').textContent = `${meta.eduLevel} / ${meta.grade}`;
+      document.getElementById('metaTopic').textContent = meta.topic;
+      document.getElementById('metaTeacher').textContent = meta.teacher;
+      document.getElementById('metaTotalQ').textContent = `${questions.length} Butir Soal`;
+
+      updatePendingImgBadge();
+
+      const qContainer = document.getElementById('questionsContainer');
+      qContainer.innerHTML = '';
+
+      questions.forEach(q => {
+        const block = document.createElement('div');
+        block.className = 'question-block';
+        block.id = `q-block-${q.num}`;
+
+        let visualHtml = '';
+        if (q.hasVisual) {
+          visualHtml = `
+            <div class="ai-visual-box">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+                <span class="pill pill-orange">🖼️ ${q.visualType}</span>
+                <span style="font-size:12px; color:var(--text-light);">Visual pendukung soal #${q.num}</span>
+              </div>
+              <div class="ai-visual-controls no-print">
+                <input type="text" id="prompt-${q.num}" value="${escapeHtml(q.visualPrompt)}" onchange="updateQuestionPrompt(${q.num}, this.value)" placeholder="Edit deskripsi gambar..." />
+                <button type="button" id="btn-img-${q.num}" class="btn btn-primary btn-sm" onclick="generateSingleImage(${q.num})">
+                  ${q.imageDataUrl ? '🔄 Regenerate Gambar' : '✨ Generate Gambar'}
+                </button>
+              </div>
+              <div id="img-preview-${q.num}" class="generated-img-wrap ${q.imageDataUrl ? '' : 'hidden'}">
+                ${q.imageDataUrl ? `<img src="${q.imageDataUrl}" alt="Visual Soal ${q.num}" />` : ''}
+              </div>
+            </div>
+          `;
+        }
+
+        let bodyHtml = '';
+        if (q.type === 'pg') {
+          bodyHtml = `<ul class="q-options">${q.options.map(o => `<li><strong>${o.label}.</strong> ${o.text}</li>`).join('')}</ul>`;
+        } else if (q.type === 'pgk') {
+          bodyHtml = `<ul class="q-options">${q.statements.map(s => `<li>☐ &nbsp;${s.text}</li>`).join('')}</ul>`;
+        } else if (q.type === 'bs') {
+          bodyHtml = `
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Pernyataan</th>
+                  <th style="width:90px; text-align:center;">Benar</th>
+                  <th style="width:90px; text-align:center;">Salah</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${q.rows.map(r => `<tr><td>${r.statement}</td><td style="text-align:center;">○</td><td style="text-align:center;">○</td></tr>`).join('')}
+              </tbody>
+            </table>
+          `;
+        } else if (q.type === 'jodoh') {
+          bodyHtml = `
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width:42%;">Premis / Istilah</th>
+                  <th style="width:16%; text-align:center;">Pasangan</th>
+                  <th style="width:42%;">Pilihan Deskripsi</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${q.pairs.map((p, i) => `
+                  <tr>
+                    <td><strong>${i + 1}.</strong> ${p.left}</td>
+                    <td style="text-align:center;">( ...... )</td>
+                    <td><strong>${q.shuffledRight[i].code}.</strong> ${q.shuffledRight[i].text}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+        } else if (q.type === 'uraian') {
+          bodyHtml = `<div style="margin-top:8px; border:1px dashed var(--border-strong); border-radius:6px; height:58px; padding:8px; font-size:12px; color:var(--text-light);">Ruang jawaban uraian...</div>`;
+        }
+
+        block.innerHTML = `
+          <div class="q-header">
+            <span class="q-num">Soal No. ${q.num}</span>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;" class="no-print">
+              <span class="pill pill-slate">${q.typeLabel}</span>
+              <span class="pill pill-green">${q.difficulty.label}</span>
+            </div>
+          </div>
+          <div class="q-text">${q.stem}</div>
+          ${visualHtml}
+          ${bodyHtml}
+        `;
+        qContainer.appendChild(block);
+      });
+
+      // Render Kunci & Pembahasan
+      const ansContainer = document.getElementById('answersContainer');
+      ansContainer.innerHTML = `
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:60px;">No.</th>
+              <th style="width:150px;">Tipe &amp; Level</th>
+              <th style="width:260px;">Kunci Jawaban</th>
+              <th>Pembahasan &amp; Analisis Konsep</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${questions.map(q => `
+              <tr>
+                <td><strong>${q.num}</strong></td>
+                <td>${q.typeLabel}<br><small style="color:var(--text-light);">${q.difficulty.label}</small></td>
+                <td style="color:#047857; font-weight:600;">${q.answer}</td>
+                <td>${q.explanation}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+
+      // Render Kisi-Kisi & Analisis
+      const kisiContainer = document.getElementById('kisikisiContainer');
+      const diffCounts = {};
+      const typeCounts = {};
+      questions.forEach(q => {
+        diffCounts[q.difficulty.label] = (diffCounts[q.difficulty.label] || 0) + 1;
+        typeCounts[q.typeLabel] = (typeCounts[q.typeLabel] || 0) + 1;
+      });
+
+      kisiContainer.innerHTML = `
+        <div style="background:var(--surface-alt); padding:14px; border-radius:10px; margin-bottom:16px; border:1px solid var(--border);">
+          <div style="font-weight:700; margin-bottom:6px;">Ringkasan Analisis Sebaran Soal (${state.examData.sourceEngine || 'AutoExam'})</div>
+          <div style="font-size:13px; color:var(--text-muted); margin-bottom:4px;">
+            <strong>Distribusi Tipe Soal:</strong> ${Object.entries(typeCounts).map(([k, v]) => `${k} (${v})`).join(' • ')}
+          </div>
+          <div style="font-size:13px; color:var(--text-muted);">
+            <strong>Distribusi Tingkat Kesulitan:</strong> ${Object.entries(diffCounts).map(([k, v]) => `${k}: ${v} soal`).join(' • ')}
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:55px;">No.</th>
+              <th style="width:190px;">Capaian / Kompetensi (${meta.curriculum})</th>
+              <th style="width:160px;">Materi Pokok</th>
+              <th>Indikator Soal</th>
+              <th style="width:130px;">Bentuk Soal</th>
+              <th style="width:135px;">Level Kognitif</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${questions.map(q => `
+              <tr>
+                <td><strong>${q.num}</strong></td>
+                <td>Memahami dan menganalisis konsep ${meta.topic} (${meta.subject} ${meta.grade})</td>
+                <td>${q.conceptTerm}</td>
+                <td>${q.indicator}</td>
+                <td>${q.typeLabel}</td>
+                <td>${q.difficulty.label}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function switchResultTab(tabName, el) {
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('tabNaskah').classList.add('hidden');
+      document.getElementById('tabKunci').classList.add('hidden');
+      document.getElementById('tabKisikisi').classList.add('hidden');
+
+      if (tabName === 'naskah') document.getElementById('tabNaskah').classList.remove('hidden');
+      if (tabName === 'kunci') document.getElementById('tabKunci').classList.remove('hidden');
+      if (tabName === 'kisikisi') document.getElementById('tabKisikisi').classList.remove('hidden');
+    }
+
+    // ==================== IMAGE GENERATION (GEMINI IMAGE API + CANVAS FALLBACK) ====================
+    function updateQuestionPrompt(qNum, val) {
+      const q = state.examData.questions.find(item => item.num === qNum);
+      if (q) q.visualPrompt = val;
+    }
+
+    function updatePendingImgBadge() {
+      if (!state.examData) return;
+      const visualQs = state.examData.questions.filter(q => q.hasVisual);
+      const pending = visualQs.filter(q => !q.imageDataUrl).length;
+      document.getElementById('pendingImgCount').textContent = pending > 0 ? pending : visualQs.length;
+      const btn = document.getElementById('btnGenAllImages');
+      if (visualQs.length === 0) btn.classList.add('hidden');
+      else btn.classList.remove('hidden');
+    }
+
+    async function callGeminiImageWithFallback(apiKey, promptText) {
+      const imgModels = ['gemini-3.1-flash-image', 'gemini-2.5-flash-image'];
+      for (const model of imgModels) {
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+          const resp = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ role: 'user', parts: [{ text: promptText }] }],
+              generationConfig: {
+                responseModalities: ['IMAGE', 'TEXT']
+              }
+            })
+          });
+          const data = await resp.json();
+          if (!resp.ok) continue;
+
+          const parts = data?.candidates?.[0]?.content?.parts || [];
+          for (const part of parts) {
+            if (part.inlineData && part.inlineData.data) {
+              const mime = part.inlineData.mimeType || 'image/png';
+              return `data:${mime};base64,${part.inlineData.data}`;
+            }
+          }
+        } catch (err) {
+          console.warn('Gemini Image fallback check:', err);
+        }
+      }
+      return null;
+    }
+
+    function renderVisualCanvas(q, meta) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 760;
+      canvas.height = 360;
+      const ctx = canvas.getContext('2d');
+
+      const grad = ctx.createLinearGradient(0, 0, 760, 360);
+      grad.addColorStop(0, '#FFF7ED');
+      grad.addColorStop(1, '#F8FAFC');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 760, 360);
+
+      ctx.strokeStyle = '#FDBA74';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(8, 8, 744, 344);
+
+      ctx.fillStyle = '#F97316';
+      ctx.fillRect(8, 8, 744, 42);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 15px sans-serif';
+      ctx.fillText(`${q.visualType.toUpperCase()} — SOAL NO. ${q.num} (${meta.subject.toUpperCase()})`, 24, 34);
+
+      const title = (q.visualPrompt || q.conceptTerm).slice(0, 68);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 16px sans-serif';
+      ctx.fillText(title, 24, 78);
+
+      if (q.visualType === 'Peta Konsep') {
+        drawNode(ctx, 380, 195, 115, 46, '#F97316', '#FFFFFF', q.conceptTerm.slice(0, 22));
+        const branches = [
+          { x: 150, y: 125, label: 'Definisi & Konsep' },
+          { x: 610, y: 125, label: 'Komponen Utama' },
+          { x: 150, y: 280, label: 'Mekanisme Proses' },
+          { x: 610, y: 280, label: 'Dampak & Aplikasi' }
+        ];
+        branches.forEach(b => {
+          ctx.beginPath();
+          ctx.moveTo(380, 195);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = '#94A3B8';
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+          drawNode(ctx, b.x, b.y, 92, 36, '#FFFFFF', '#0F172A', b.label, '#F97316');
+        });
+      } else if (q.visualType === 'Diagram / Grafik') {
+        const stages = [
+          { x: 140, title: 'TAHAP 1: INPUT', sub: meta.topic.slice(0, 20) },
+          { x: 380, title: 'TAHAP 2: PROSES', sub: q.conceptTerm.slice(0, 20) },
+          { x: 620, title: 'TAHAP 3: OUTPUT', sub: 'Keseimbangan Sistem' }
+        ];
+        stages.forEach((st, i) => {
+          drawNode(ctx, st.x, 195, 95, 62, '#FFFFFF', '#0F172A', st.title, '#0284C7');
+          ctx.fillStyle = '#475569';
+          ctx.font = '12px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(st.sub, st.x, 214);
+          ctx.textAlign = 'left';
+
+          if (i < stages.length - 1) {
+            ctx.beginPath();
+            ctx.moveTo(st.x + 98, 195);
+            ctx.lineTo(stages[i + 1].x - 98, 195);
+            ctx.strokeStyle = '#F97316';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+          }
+        });
+      } else {
+        ctx.fillStyle = '#FFFFFF';
+        ctx.strokeStyle = '#CBD5E1';
+        ctx.lineWidth = 2;
+        ctx.fillRect(32, 98, 696, 224);
+        ctx.strokeRect(32, 98, 696, 224);
+
+        ctx.fillStyle = '#FFEDD5';
+        ctx.beginPath();
+        ctx.arc(175, 210, 74, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#F97316';
+        ctx.beginPath();
+        ctx.arc(175, 210, 42, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 13px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('FOKUS', 175, 206);
+        ctx.fillText('OBSERVASI', 175, 223);
+        ctx.textAlign = 'left';
+
+        const notes = [
+          `• Objek Amati: ${q.conceptTerm}`,
+          `• Konteks Materi: ${meta.topic}`,
+          `• Tingkat Analisis: ${q.difficulty.label}`,
+          '• Gunakan visual ini untuk menjawab pertanyaan.'
+        ];
+        ctx.fillStyle = '#1E293B';
+        ctx.font = '14px sans-serif';
+        notes.forEach((line, idx) => {
+          ctx.fillText(line.slice(0, 56), 285, 145 + idx * 42);
+        });
+      }
+
+      return canvas.toDataURL('image/png');
+    }
+
+    function drawNode(ctx, cx, cy, rx, ry, fill, textColor, label, strokeColor = '#EA580C') {
+      ctx.fillStyle = fill;
+      ctx.strokeStyle = strokeColor;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.roundRect(cx - rx, cy - ry, rx * 2, ry * 2, 12);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = textColor;
+      ctx.font = 'bold 13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(label, cx, cy + 4);
+      ctx.textAlign = 'left';
+    }
+
+    async function generateSingleImage(qNum, silent = false) {
+      const q = state.examData.questions.find(item => item.num === qNum);
+      if (!q) return;
+
+      const btn = document.getElementById(`btn-img-${qNum}`);
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '⏳ Membuat Gambar...';
+      }
+
+      const apiKey = getApiKey();
+      let dataUrl = null;
+      let usedRealAi = false;
+
+      if (apiKey.length > 10) {
+        const imgPrompt = `Buat ilustrasi buku pelajaran / ${q.visualType} yang bersih, jelas, dan edukatif dengan latar belakang putih terang untuk soal ${state.examData.meta.subject} (${state.examData.meta.grade}). Deskripsi visual: ${q.visualPrompt}. Hindari teks yang berantakan.`;
+        dataUrl = await callGeminiImageWithFallback(apiKey, imgPrompt);
+        if (dataUrl) usedRealAi = true;
+      }
+
+      if (!dataUrl) {
+        dataUrl = renderVisualCanvas(q, state.examData.meta);
+      }
+
+      q.imageDataUrl = dataUrl;
+      const preview = document.getElementById(`img-preview-${qNum}`);
+      if (preview) {
+        preview.classList.remove('hidden');
+        preview.innerHTML = `<img src="${dataUrl}" alt="Visual Soal ${qNum}" />`;
+      }
+
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = '🔄 Regenerate Gambar';
+      }
+
+      updatePendingImgBadge();
+      if (!silent) {
+        if (apiKey.length > 10 && !usedRealAi) {
+          showToast('Kuota gambar Gemini API tidak tersedia pada key ini — diagram lokal otomatis digunakan.');
+        } else {
+          showToast(usedRealAi ? 'Gambar AI Gemini berhasil digenerate!' : 'Visual diagram berhasil digenerate!');
+        }
+        saveSessionSilent();
+      }
+    }
+
+    async function generateAllImages() {
+      const visualQs = state.examData.questions.filter(q => q.hasVisual);
+      if (!visualQs.length) return;
+      showToast(`Mulai men-generate ${visualQs.length} gambar...`);
+      for (const q of visualQs) {
+        await generateSingleImage(q.num, true);
+      }
+      saveSessionSilent();
+      showToast(`Semua (${visualQs.length}) gambar berhasil digenerate!`);
+    }
+
+    function saveSessionSilent() {
+      try {
+        localStorage.setItem('autoexam_last_session', JSON.stringify(state.examData));
+      } catch (e) {}
+    }
+
+    function checkSavedExam() {
+      const saved = localStorage.getItem('autoexam_last_session');
+      const btn = document.getElementById('btnLastResult');
+      if (saved) btn.classList.remove('hidden');
+      else btn.classList.add('hidden');
+    }
+
+    function loadLastSavedExam() {
+      const saved = localStorage.getItem('autoexam_last_session');
+      if (!saved) {
+        showToast('Belum ada hasil ujian tersimpan.');
+        return;
+      }
+      state.examData = JSON.parse(saved);
+      renderExamResults();
+      goToView('results');
+      showToast('Hasil soal terakhir berhasil dimuat!');
+    }
+
+    // ==================== COPY & EXPORT MS WORD ====================
+    function buildFullWordHtml() {
+      const { meta, questions } = state.examData;
+
+      const qRows = questions.map(q => {
+        let imgTag = q.imageDataUrl
+          ? `<div style="margin:8px 0;"><img src="${q.imageDataUrl}" width="460" /></div>`
+          : '';
+        let optHtml = '';
+        if (q.type === 'pg') {
+          optHtml = `<div style="margin-left:18px;">${q.options.map(o => `<div><b>${o.label}.</b> ${o.text}</div>`).join('')}</div>`;
+        } else if (q.type === 'pgk') {
+          optHtml = `<div style="margin-left:18px;">${q.statements.map(s => `<div>[ ] ${s.text}</div>`).join('')}</div>`;
+        } else if (q.type === 'bs') {
+          optHtml = `<table border="1" cellspacing="0" cellpadding="5" style="width:100%; border-collapse:collapse; margin-top:6px;">
+            <tr><th>Pernyataan</th><th>Benar</th><th>Salah</th></tr>
+            ${q.rows.map(r => `<tr><td>${r.statement}</td><td align="center">O</td><td align="center">O</td></tr>`).join('')}
+          </table>`;
+        } else if (q.type === 'jodoh') {
+          optHtml = `<table border="1" cellspacing="0" cellpadding="5" style="width:100%; border-collapse:collapse; margin-top:6px;">
+            <tr><th>Premis</th><th>Pasangan</th><th>Pilihan</th></tr>
+            ${q.pairs.map((p, i) => `<tr><td>${i + 1}. ${p.left}</td><td align="center">( ... )</td><td>${q.shuffledRight[i].code}. ${q.shuffledRight[i].text}</td></tr>`).join('')}
+          </table>`;
+        } else if (q.type === 'uraian') {
+          optHtml = `<p><i>Jawaban: ........................................................................................................</i></p>`;
+        }
+
+        return `
+          <div style="margin-bottom:14px;">
+            <p style="margin:0 0 4px 0;"><b>${q.num}.</b> ${q.stem}</p>
+            ${imgTag}
+            ${optHtml}
+          </div>
+        `;
+      }).join('');
+
+      const ansRows = questions.map(q => `
+        <tr>
+          <td>${q.num}</td>
+          <td>${q.typeLabel} (${q.difficulty.label})</td>
+          <td><b>${q.answer}</b></td>
+          <td>${q.explanation}</td>
+        </tr>
+      `).join('');
+
+      const kisiRows = questions.map(q => `
+        <tr>
+          <td>${q.num}</td>
+          <td>Memahami &amp; menganalisis ${meta.topic}</td>
+          <td>${q.conceptTerm}</td>
+          <td>${q.indicator}</td>
+          <td>${q.typeLabel}</td>
+          <td>${q.difficulty.label}</td>
+        </tr>
+      `).join('');
+
+      return `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><meta charset="utf-8"><title>${meta.examTitle}</title>
+        <style>
+          body { font-family: 'Times New Roman', serif; font-size: 12pt; line-height: 1.45; }
+          table { border-collapse: collapse; width: 100%; }
+          th, td { border: 1px solid #333; padding: 6px; font-size: 11pt; }
+          th { background: #f2f2f2; }
+        </style>
+        </head>
+        <body>
+          <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:8px; margin-bottom:12px;">
+            <h2 style="margin:0;">${meta.school.toUpperCase()}</h2>
+            <h3 style="margin:4px 0;">${meta.examTitle.toUpperCase()}</h3>
+            <div>Kurikulum ${meta.curriculum}</div>
+          </div>
+          <table style="margin-bottom:14px;">
+            <tr><td><b>Mata Pelajaran</b></td><td>${meta.subject}</td><td><b>Jenjang / Kelas</b></td><td>${meta.eduLevel} / ${meta.grade}</td></tr>
+            <tr><td><b>Topik / Materi</b></td><td>${meta.topic}</td><td><b>Guru Penyusun</b></td><td>${meta.teacher}</td></tr>
+          </table>
+          ${qRows}
+          <br clear="all" style="page-break-before:always" />
+          <h3>KUNCI JAWABAN &amp; PEMBAHASAN</h3>
+          <table>
+            <tr><th>No</th><th>Tipe &amp; Level</th><th>Kunci Jawaban</th><th>Pembahasan</th></tr>
+            ${ansRows}
+          </table>
+          <br clear="all" style="page-break-before:always" />
+          <h3>KISI-KISI PENULISAN SOAL</h3>
+          <table>
+            <tr><th>No</th><th>Kompetensi</th><th>Materi</th><th>Indikator</th><th>Bentuk</th><th>Level</th></tr>
+            ${kisiRows}
+          </table>
+        </body>
+        </html>
+      `;
+    }
+
+    async function copyCurrentToWord() {
+      const html = buildFullWordHtml();
+      try {
+        const blobHtml = new Blob([html], { type: 'text/html' });
+        const blobText = new Blob([document.getElementById('tabNaskah').innerText], { type: 'text/plain' });
+        await navigator.clipboard.write([
+          new ClipboardItem({ 'text/html': blobHtml, 'text/plain': blobText })
+        ]);
+        showToast('Naskah soal berhasil disalin! Silakan Paste (Ctrl+V) di MS Word.');
+      } catch (err) {
+        copySectionHtml('tabNaskah', 'Naskah soal berhasil disalin! Silakan Paste (Ctrl+V) di MS Word.');
+      }
+    }
+
+    function copySectionHtml(elementId, toastMsg) {
+      const el = document.getElementById(elementId);
+      const range = document.createRange();
+      range.selectNode(el);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      document.execCommand('copy');
+      sel.removeAllRanges();
+      showToast(toastMsg);
+    }
+
+    function downloadWordDoc() {
+      const html = buildFullWordHtml();
+      const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const slug = (state.examData.meta.subject || 'Ujian').replace(/[^a-zA-Z0-9]+/g, '_');
+      a.href = url;
+      a.download = `AutoExam_${slug}_${state.examData.meta.grade.replace(/\s+/g, '')}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Dokumen MS Word berhasil diunduh!');
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+  </script>
+</body>
+</html>
